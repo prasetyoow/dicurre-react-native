@@ -1,5 +1,7 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import ReactNativePinView from 'react-native-pin-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
 // components
@@ -8,6 +10,22 @@ import {useNavigation} from '@react-navigation/native';
 
 const CreatePinScreen = () => {
   const navigation = useNavigation();
+  const pinView = useRef(null);
+  const [showRemoveButton, setShowRemoveButton] = useState(false);
+  const [enteredPin, setEnteredPin] = useState('');
+  const [showCompletedButton, setShowCompletedButton] = useState(false);
+  useEffect(() => {
+    if (enteredPin.length > 0) {
+      setShowRemoveButton(true);
+    } else {
+      setShowRemoveButton(false);
+    }
+    if (enteredPin.length === 6) {
+      setShowCompletedButton(true);
+    } else {
+      setShowCompletedButton(false);
+    }
+  }, [enteredPin]);
   return (
     // Header
     <>
@@ -23,9 +41,48 @@ const CreatePinScreen = () => {
           Zwallet.
         </Text>
         {/* <CodePin number={6} /> */}
+        <ReactNativePinView
+          pinLength={6}
+          ref={pinView}
+          inputViewFilledStyle={styles.pinBorder}
+          // eslint-disable-next-line react-native/no-inline-styles
+          inputViewEmptyStyle={{
+            backgroundColor: 'white',
+            borderColor: '#A9A9A999',
+            borderWidth: 1,
+          }}
+          onValueChange={value => setEnteredPin(value)}
+          // eslint-disable-next-line react-native/no-inline-styles
+          buttonViewStyle={{
+            borderWidth: 1,
+            borderColor: '#6379F4',
+          }}
+          // eslint-disable-next-line react-native/no-inline-styles
+          buttonTextStyle={{
+            color: '#6379F4',
+          }}
+          onButtonPress={key => {
+            if (key === 'custom_left') {
+              pinView.current.clear();
+            }
+            if (key === 'custom_right') {
+              Alert.alert('Entered Pin: ' + enteredPin);
+            }
+          }}
+          customLeftButton={
+            showRemoveButton ? (
+              <Icon name="remove" size={36} color="red" />
+            ) : undefined
+          }
+          customRightButton={
+            showCompletedButton ? (
+              <Icon name="check" size={36} color="green" />
+            ) : undefined
+          }
+        />
         <TouchableOpacity
           style={styles.containerButton}
-          onPress={() => navigation.push('CreatePINSuccess')}>
+          onPress={() => navigation.navigate('CreatePINSuccess')}>
           <Text style={styles.textButton}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -88,6 +145,11 @@ const styles = StyleSheet.create({
   footer: {
     textAlign: 'center',
     margin: 50,
+  },
+  pinBorder: {
+    borderWidth: 1,
+    borderColor: '#6379F4',
+    backgroundColor: '#6379F4',
   },
 });
 

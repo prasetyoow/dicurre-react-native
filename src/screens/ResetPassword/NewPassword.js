@@ -35,7 +35,7 @@ const NewPassword = () => {
         </View>
         <TouchableOpacity
           style={styles.containerButton}
-          onPress={() => navigation.push('Login')}>
+          onPress={() => navigation.navigate('Login')}>
           <Text style={styles.textButton}>Reset Password</Text>
         </TouchableOpacity>
         <View style={styles.horizontal} />

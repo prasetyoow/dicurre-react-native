@@ -6,11 +6,14 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const FindReceiver = () => {
+  const navigation = useNavigation();
   return (
     <>
       <SafeAreaView>
@@ -43,7 +46,7 @@ const FindReceiver = () => {
             <View style={styles.contactContainer}>
               <Image
                 style={styles.contactImage}
-                source={require('../../assets/images/sephiroth.png')}
+                source={require('../../../assets/images/jessica.png')}
               />
               <Text style={styles.textName}>Michi</Text>
               <Text style={styles.textPhone}>-9994</Text>
@@ -51,18 +54,18 @@ const FindReceiver = () => {
             <View style={styles.contactContainer}>
               <Image
                 style={styles.contactImage}
-                source={require('../../assets/images/sephiroth.png')}
+                source={require('../../../assets/images/momo.png')}
               />
-              <Text style={styles.textName}>Michi</Text>
-              <Text style={styles.textPhone}>-9994</Text>
+              <Text style={styles.textName}>Dody</Text>
+              <Text style={styles.textPhone}>-3561</Text>
             </View>
             <View style={styles.contactContainer}>
               <Image
                 style={styles.contactImage}
-                source={require('../../assets/images/sephiroth.png')}
+                source={require('../../../assets/images/rian.png')}
               />
-              <Text style={styles.textName}>Michi</Text>
-              <Text style={styles.textPhone}>-9994</Text>
+              <Text style={styles.textName}>Rian</Text>
+              <Text style={styles.textPhone}>-3822</Text>
             </View>
           </View>
 
@@ -70,20 +73,51 @@ const FindReceiver = () => {
           <Text style={styles.textMid}>All Contact</Text>
           <Text style={styles.textMuted}>17 Contacts Found</Text>
 
+          <TouchableOpacity onPress={() => navigation.navigate('InputAmount')}>
+            <View style={styles.dataHistoryContainer}>
+              <View style={styles.dataHistoryFlex}>
+                <View style={styles.profHistoryFlex}>
+                  <Image
+                    style={styles.dataHistoryImage}
+                    source={require('../../../assets/images/suhi.png')}
+                  />
+                  <View style={styles.textHistoryFlex}>
+                    <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
+                    <Text style={styles.textMutedHistory}>
+                      +62 813-8492-9994
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+
           <View style={styles.dataHistoryContainer}>
             <View style={styles.dataHistoryFlex}>
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/sephiroth.png')}
+                  source={require('../../../assets/images/jessica.png')}
+                />
+                <View style={styles.textHistoryFlex}>
+                  <Text style={styles.dataNameHistory}>Julia Syen</Text>
+                  <Text style={styles.textMutedHistory}>+62 812-3942-3656</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.dataHistoryContainer}>
+            <View style={styles.dataHistoryFlex}>
+              <View style={styles.profHistoryFlex}>
+                <Image
+                  style={styles.dataHistoryImage}
+                  source={require('../../../assets/images/bobi.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
+                  <Text style={styles.textMutedHistory}>+62 813-5982-2940</Text>
                 </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.1.150.000</Text>
               </View>
             </View>
           </View>
@@ -93,51 +127,12 @@ const FindReceiver = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/sephiroth.png')}
+                  source={require('../../../assets/images/juliana.png')}
                 />
                 <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Momo Taro</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
+                  <Text style={styles.dataNameHistory}>Juliana Rich</Text>
+                  <Text style={styles.textMutedHistory}>+62 811-6212-5663</Text>
                 </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/sephiroth.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.1.150.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/sephiroth.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Momo Taro</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
               </View>
             </View>
           </View>

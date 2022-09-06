@@ -1,67 +1,86 @@
-import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 
 // components
 import CustomInput from '../../components/CustomInput';
 // import CustomButton from '../../components/CustomButton';
 
+// redux
+import {login} from '../../redux/asyncActions/auth';
+
 const LoginScreen = () => {
-  const [email, SetEmail] = React.useState('');
-  const [password, SetPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const data = {
+    email,
+    password,
+  };
 
   const onLogin = () => {
-    if (email === 'admin@mail.com' && password === 'admin') {
-      Alert.alert('Success', 'Login Success');
-      // navigation.navigate('HomeScreen');
-    } else {
-      Alert.alert('Error', 'Not Registered, please register. Redirecting...');
-      navigation.navigate('Home');
-    }
+    // dispatch(login(data));
+    navigation.navigate('HomeTab');
   };
 
   return (
     // Header
     <>
       {/* // Header */}
-      <View style={styles.containerTop}>
-        <Text style={styles.topLogo}>Zwallet</Text>
-      </View>
-      {/* // Content */}
-      <View style={styles.containerContent}>
-        <Text style={styles.contentHead}>Login</Text>
-        <Text style={styles.contentMuted}>
-          Login to your existing account to access all the features in Zwallet.
-        </Text>
-        <View style={styles.inputCustom}>
-          <CustomInput
-            placeholder="Enter your e-mail"
-            icon="envelope"
-            type="email-address"
-          />
-          <CustomInput
-            placeholder="Enter your password"
-            icon="lock"
-            secure={true}
-            type=""
-          />
+      <ScrollView>
+        <View style={styles.containerTop}>
+          <Text style={styles.topLogo}>Zwallet</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.push('ForgotPass')}>
-          <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.containerButton} onPress={onLogin}>
-          <Text style={styles.textButton}>Login</Text>
-        </TouchableOpacity>
-        {/* <CustomButton text="Login" onPress={onLogin} /> */}
-        <Text style={styles.footer}>
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.push('Signup')}>
-            <Text style={styles.signupLink}>Let's Sign Up</Text>
+        {/* // Content */}
+        <View style={styles.containerContent}>
+          <Text style={styles.contentHead}>Login</Text>
+          <Text style={styles.contentMuted}>
+            Login to your existing account to access all the features in
+            Zwallet.
+          </Text>
+          <View style={styles.inputCustom}>
+            <CustomInput
+              placeholder="Enter your e-mail"
+              onChange={text => setEmail(text)}
+              icon="envelope"
+              type="email-address"
+              value={email}
+            />
+            <CustomInput
+              placeholder="Enter your password"
+              onChange={text => setPassword(text)}
+              icon="lock"
+              secure={true}
+              type="email-address"
+              value={password}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ResetPassword')}>
+            <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
-        </Text>
-      </View>
+
+          <TouchableOpacity style={styles.containerButton} onPress={onLogin}>
+            <Text style={styles.textButton}>Login</Text>
+          </TouchableOpacity>
+          {/* <CustomButton text="Login" onPress={onLogin} /> */}
+          <Text style={styles.footer}>
+            Don't have an account?{' '}
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.signupLink}>Let's Sign Up</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
+      </ScrollView>
     </>
   );
 };

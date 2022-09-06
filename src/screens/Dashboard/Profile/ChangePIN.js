@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ReactNativePinView from 'react-native-pin-view';
 import {useNavigation} from '@react-navigation/native';
 
-const EnterPIN = () => {
+const ChangePIN = () => {
   const navigation = useNavigation();
   const pinView = useRef(null);
   const [showRemoveButton, setShowRemoveButton] = useState(false);
@@ -25,13 +25,14 @@ const EnterPIN = () => {
   return (
     <>
       {/* Top Navigation */}
-      <View style={styles.topTransferContainer}>
+      <View style={styles.topPersonalContainer}>
         <Icon name="arrow-left" size={30} color="#4D4B57" />
-        <Text style={styles.textTop}>Enter Your PIN</Text>
+        <Text style={styles.textTop}>Change PIN</Text>
       </View>
 
       <Text style={styles.textMuted}>
-        Enter your 6 digits PIN for confirmation to continue transferring money.
+        Enter your current 6 digits Zwallet PIN below to continue to the next
+        steps.
       </Text>
 
       <ReactNativePinView
@@ -76,15 +77,15 @@ const EnterPIN = () => {
 
       <TouchableOpacity
         style={styles.containerButton}
-        onPress={() => navigation.navigate('TransferSuccess')}>
-        <Text style={styles.textButton}>Transfer Now</Text>
+        onPress={() => navigation.navigate('Profile')}>
+        <Text style={styles.textButton}>Change PIN</Text>
       </TouchableOpacity>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  topTransferContainer: {
+  topPersonalContainer: {
     flexDirection: 'row',
     marginTop: 30,
     padding: 15,
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     color: '#4D4B57',
   },
   textMuted: {
+    marginTop: 15,
     padding: 15,
     fontSize: 16,
     fontWeight: '400',
@@ -104,9 +106,9 @@ const styles = StyleSheet.create({
   containerButton: {
     backgroundColor: '#6379F4',
     width: '90%',
-    padding: 20,
+    padding: 15,
     marginLeft: 20,
-    marginTop: 20,
+    marginTop: 170,
     alignItems: 'center',
     borderRadius: 12,
   },
@@ -121,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EnterPIN;
+export default ChangePIN;

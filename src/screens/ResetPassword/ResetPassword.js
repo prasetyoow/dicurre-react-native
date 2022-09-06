@@ -26,7 +26,7 @@ const ResetPassWord = () => {
         </View>
         <TouchableOpacity
           style={styles.containerButton}
-          onPress={() => navigation.push('NewPass')}>
+          onPress={() => navigation.navigate('NewPassword')}>
           <Text style={styles.textButton}>Confirm</Text>
         </TouchableOpacity>
         <View style={styles.horizontal} />

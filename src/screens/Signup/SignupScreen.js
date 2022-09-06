@@ -1,4 +1,10 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
@@ -12,36 +18,38 @@ const SignupScreen = () => {
     // Header
     <>
       {/* // Header */}
-      <View style={styles.containerTop}>
-        <Text style={styles.topLogo}>Zwallet</Text>
-      </View>
-      {/* // Content */}
-      <View style={styles.containerContent}>
-        <Text style={styles.contentHead}>Sign Up</Text>
-        <Text style={styles.contentMuted}>
-          Create your account to access Zwallet.
-        </Text>
-        <View style={styles.inputCustom}>
-          <CustomInput placeholder="Enter your username" icon="user" />
-          <CustomInput placeholder="Enter your e-mail" icon="envelope" />
-          <CustomInput
-            placeholder="Enter your password"
-            icon="lock"
-            secureTextEntry={true}
-          />
+      <ScrollView>
+        <View style={styles.containerTop}>
+          <Text style={styles.topLogo}>Zwallet</Text>
         </View>
-        <TouchableOpacity
-          style={styles.containerButton}
-          onPress={() => navigation.push('CreatePIN')}>
-          <Text style={styles.textButton}>Signup</Text>
-        </TouchableOpacity>
-        <Text style={styles.footer}>
-          Already have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.push('Login')}>
-            <Text style={styles.signupLink}>Let's Login</Text>
+        {/* // Content */}
+        <View style={styles.containerContent}>
+          <Text style={styles.contentHead}>Sign Up</Text>
+          <Text style={styles.contentMuted}>
+            Create your account to access Zwallet.
+          </Text>
+          <View style={styles.inputCustom}>
+            <CustomInput placeholder="Enter your username" icon="user" />
+            <CustomInput placeholder="Enter your e-mail" icon="envelope" />
+            <CustomInput
+              placeholder="Enter your password"
+              icon="lock"
+              secureTextEntry={true}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.containerButton}
+            onPress={() => navigation.navigate('CreatePIN')}>
+            <Text style={styles.textButton}>Signup</Text>
           </TouchableOpacity>
-        </Text>
-      </View>
+          <Text style={styles.footer}>
+            Already have an account?{' '}
+            <TouchableOpacity onPress={() => navigation.push('Login')}>
+              <Text style={styles.signupLink}>Let's Login</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
+      </ScrollView>
     </>
   );
 };

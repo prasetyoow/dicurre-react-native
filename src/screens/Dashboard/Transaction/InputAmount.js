@@ -5,55 +5,62 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const InputAmount = () => {
+  const navigation = useNavigation();
   return (
     <>
       {/* Top Navigation */}
-      <View style={styles.topTransferContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
-        <Text style={styles.textTop}>Transfer</Text>
-      </View>
+      <ScrollView>
+        <View style={styles.topTransferContainer}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+          <Text style={styles.textTop}>Transfer</Text>
+        </View>
 
-      <View style={styles.dataHistoryContainer}>
-        <View style={styles.dataHistoryFlex}>
-          <View style={styles.profHistoryFlex}>
-            <Image
-              style={styles.dataHistoryImage}
-              source={require('../../../assets/images/sephiroth.png')}
-            />
-            <View>
-              <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-              <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
+        <View style={styles.dataHistoryContainer}>
+          <View style={styles.dataHistoryFlex}>
+            <View style={styles.profHistoryFlex}>
+              <Image
+                style={styles.dataHistoryImage}
+                source={require('../../../assets/images/suhi.png')}
+              />
+              <View>
+                <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
+                <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <View>
-        <Text style={styles.amountAvail}>Rp. 120.000 Available</Text>
-        <TextInput
-          style={styles.textInputTransfer}
-          placeholder="0,00"
-          keyboardType="numeric"
-        />
-        <View style={styles.textInputFlex}>
-          <Icon
-            style={styles.iconForm}
-            name="pencil"
-            size={24}
-            color="#A9A9A999"
+        <View>
+          <Text style={styles.amountAvail}>Rp. 120.000 Available</Text>
+          <TextInput
+            style={styles.textInputTransfer}
+            placeholder="0,00"
+            keyboardType="numeric"
           />
-          <TextInput placeholder="Add some notes" />
+          <View style={styles.textInputFlex}>
+            <Icon
+              style={styles.iconForm}
+              name="pencil"
+              size={24}
+              color="#A9A9A999"
+            />
+            <TextInput placeholder="Add some notes" />
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity style={styles.containerButton}>
-        <Text style={styles.textButton}>Confirm</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.containerButton}
+          onPress={() => navigation.navigate('Confirmation')}>
+          <Text style={styles.textButton}>Confirm</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </>
   );
 };

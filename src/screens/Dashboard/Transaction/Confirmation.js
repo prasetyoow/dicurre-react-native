@@ -1,8 +1,10 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const Confirmation = () => {
+  const navigation = useNavigation();
   return (
     <>
       {/* Top Navigation */}
@@ -18,10 +20,10 @@ const Confirmation = () => {
           <View style={styles.profHistoryFlex}>
             <Image
               style={styles.dataHistoryImage}
-              source={require('../../assets/images/sephiroth.png')}
+              source={require('../../../assets/images/suhi.png')}
             />
             <View>
-              <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
+              <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
               <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
             </View>
           </View>
@@ -50,7 +52,9 @@ const Confirmation = () => {
         <Text style={styles.textAmountTransfer}>For buying some socks</Text>
       </View>
 
-      <TouchableOpacity style={styles.containerButton}>
+      <TouchableOpacity
+        style={styles.containerButton}
+        onPress={() => navigation.navigate('EnterPIN')}>
         <Text style={styles.textButton}>Continue</Text>
       </TouchableOpacity>
     </>

@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const TransferSuccess = () => {
+  const navigation = useNavigation();
   return (
     <>
       <SafeAreaView>
@@ -51,17 +53,19 @@ const TransferSuccess = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/sephiroth.png')}
+                  source={require('../../../assets/images/suhi.png')}
                 />
                 <View>
-                  <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
+                  <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
                   <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
                 </View>
               </View>
             </View>
           </View>
 
-          <TouchableOpacity style={styles.containerButton}>
+          <TouchableOpacity
+            style={styles.containerButton}
+            onPress={() => navigation.navigate('Home')}>
             <Text style={styles.textButton}>Back to Home</Text>
           </TouchableOpacity>
         </ScrollView>

@@ -2,80 +2,49 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Image,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
 
-const Home = () => {
-  const navigation = useNavigation();
+const Details = () => {
   return (
     <>
       <SafeAreaView>
         <ScrollView>
-          {/* Profile */}
-          <View style={styles.profileSection}>
-            <View style={styles.profileFlex}>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <Image
-                  style={styles.profileImage}
-                  source={require('../../assets/images/robert.png')}
-                />
-              </TouchableOpacity>
-              <View style={styles.profileName}>
-                <Text>Hello,</Text>
-                <Text style={styles.userName}>Robert Chandler</Text>
-              </View>
-            </View>
-            <TouchableOpacity style={styles.profileNotif}>
-              <Icon name="bell" size={24} color="gray" />
-            </TouchableOpacity>
+          {/* Top Navigation */}
+          <View style={styles.topDetailContainer}>
+            <Icon name="arrow-left" size={30} color="#4D4B57" />
+            <Text style={styles.textTop}>Transaction</Text>
           </View>
-
-          {/* Balance */}
-          <View style={styles.containerBalance}>
-            <View style={styles.containerContentBalance}>
-              <Text style={styles.textBalanceTop}>Balance</Text>
-              <Text style={styles.textBalanceMid}>Rp. 100.000</Text>
-              <Text style={styles.textBalanceBot}>+62 89618343727</Text>
+          {/* Top Mid Content */}
+          <View style={styles.topMidContainer}>
+            <View style={styles.expenseFlex}>
+              <Icon name="arrow-down" size={28} color="#1EC15F" />
+              <Text style={styles.textMuted}>Income</Text>
+              <Text style={styles.textWhite}>Rp. 2.120.000</Text>
+            </View>
+            <View style={styles.expenseFlex}>
+              <Icon name="arrow-down" size={28} color="#FF5B37" />
+              <Text style={styles.textMuted}>Expense</Text>
+              <Text style={styles.textWhite}>Rp. 1.560.000</Text>
             </View>
           </View>
+          <View />
 
-          {/* Top up */}
-          <View style={styles.containerTopUpFlex}>
-            <TouchableOpacity onPress={() => navigation.navigate('Transfer')}>
-              <View style={styles.containerTopUp}>
-                <View style={styles.contentTopup}>
-                  <View style={styles.transferFlex}>
-                    <Icon name="arrow-up" size={24} color="#608DE2" />
-                    <Text style={styles.textTransfer}>Transfer</Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate('TopUp')}>
-              <View style={styles.containerTopUp}>
-                <View style={styles.contentTopup}>
-                  <View style={styles.transferFlex}>
-                    <Icon name="plus" size={24} color="#608DE2" />
-                    <Text style={styles.textTransfer}>Top Up</Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
+          {/* Graphic */}
+          <Text style={styles.textWeek}>In This Week</Text>
+          <Image
+            style={styles.graphImage}
+            source={require('../../../assets/images/graphic.png')}
+          />
 
           {/* Transaction History */}
           <View style={styles.historyFlex}>
             <Text style={styles.historyTransText}>Transaction History</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Details')}>
-              <Text style={styles.historyLink}>See all</Text>
-            </TouchableOpacity>
+            <Text style={styles.historyLink}>See all</Text>
           </View>
 
           <View style={styles.dataHistoryContainer}>
@@ -83,7 +52,7 @@ const Home = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/suhi.png')}
+                  source={require('../../../assets/images/sephiroth.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
@@ -101,7 +70,7 @@ const Home = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/spotify.png')}
+                  source={require('../../../assets/images/sephiroth.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Spotify</Text>
@@ -119,7 +88,7 @@ const Home = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/netflix.png')}
+                  source={require('../../../assets/images/sephiroth.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Netflix</Text>
@@ -137,7 +106,7 @@ const Home = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/bobi.png')}
+                  source={require('../../../assets/images/sephiroth.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
@@ -155,7 +124,7 @@ const Home = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../assets/images/suhi.png')}
+                  source={require('../../../assets/images/sephiroth.png')}
                 />
                 <View style={styles.textHistoryFlex}>
                   <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
@@ -174,82 +143,45 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  profileSection: {
+  topDetailContainer: {
     flexDirection: 'row',
     marginTop: 30,
     padding: 15,
-    justifyContent: 'space-between',
   },
-  profileFlex: {
-    flexDirection: 'row',
-  },
-  profileImage: {
-    borderRadius: 10,
-    width: 52,
-    height: 52,
-  },
-  userName: {
-    fontSize: 18,
+  textTop: {
+    marginLeft: 30,
+    fontSize: 20,
     fontWeight: '700',
+    color: '#4D4B57',
   },
-  profileName: {
-    flexDirection: 'column',
-    marginTop: 5,
-    paddingLeft: 30,
-  },
-  profileNotif: {
-    paddingTop: 15,
-  },
-  containerBalance: {
+  topMidContainer: {
     width: 380,
     backgroundColor: '#6379F4',
     borderRadius: 20,
-    padding: 15,
+    padding: 25,
     margin: 15,
-  },
-  containerContentBalance: {
-    padding: 10,
-  },
-  textBalanceTop: {
-    color: '#D0D0D0',
-    fontSize: 14,
-    fontWeight: '400',
-    paddingBottom: 10,
-  },
-  textBalanceMid: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: '700',
-    paddingBottom: 10,
-  },
-  textBalanceBot: {
-    color: '#D0D0D0',
-    fontSize: 14,
-    fontWeight: '400',
-    paddingBottom: 10,
-  },
-  containerTopUpFlex: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  containerTopUp: {
-    width: 172,
-    backgroundColor: '#EAEDFF',
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 15,
+  textMuted: {
+    color: '#D0D0D0',
+    marginTop: 10,
   },
-  transferFlex: {
-    margin: 10,
+  textWhite: {
+    color: '#F1F1F1',
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  textWeek: {
     padding: 15,
-    flexDirection: 'row',
-  },
-  textTransfer: {
+    marginTop: 30,
     color: '#514F5B',
     fontSize: 18,
     fontWeight: '700',
-    marginLeft: 20,
+  },
+  graphImage: {
+    marginLeft: 25,
   },
   historyFlex: {
     flexDirection: 'row',
@@ -260,9 +192,11 @@ const styles = StyleSheet.create({
     color: '#514F5B',
     fontSize: 18,
     fontWeight: '700',
+    marginTop: 30,
   },
   historyLink: {
     color: '#6379F4',
+    marginTop: 30,
   },
   dataHistoryContainer: {
     padding: 15,
@@ -306,4 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Details;
