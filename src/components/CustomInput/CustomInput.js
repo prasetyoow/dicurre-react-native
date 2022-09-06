@@ -2,7 +2,15 @@ import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const CustomInput = ({placeholder, icon, type, setValue, secure}) => {
+const CustomInput = ({
+  placeholder,
+  icon,
+  type,
+  secure,
+  value,
+  defaultValue,
+  onChange,
+}) => {
   const [showText, setShow] = React.useState(false);
   return (
     <View style={styles.container}>
@@ -13,7 +21,9 @@ const CustomInput = ({placeholder, icon, type, setValue, secure}) => {
         <TextInput
           placeholder={placeholder}
           keyboardType={type}
-          onChangeText={setValue}
+          onChangeText={onChange}
+          value={value}
+          defaultValue={defaultValue}
           secureTextEntry={!showText}
         />
       </View>
