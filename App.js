@@ -6,11 +6,11 @@ import Main from './src/screens/Main';
 
 const App = () => {
   return (
-    <PersistGate persistor={persistor}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
         <Main />
-      </Provider>
-    </PersistGate>
+      </PersistGate>
+    </Provider>
   );
 };
 
