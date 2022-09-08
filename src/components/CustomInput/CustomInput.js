@@ -7,9 +7,10 @@ const CustomInput = ({
   icon,
   type,
   secure,
+  onChange,
   value,
   defaultValue,
-  onChange,
+  name,
 }) => {
   const [showText, setShow] = React.useState(false);
   return (
@@ -21,10 +22,10 @@ const CustomInput = ({
         <TextInput
           placeholder={placeholder}
           keyboardType={type}
-          onChangeText={onChange}
+          secureTextEntry={!showText}
+          onChangeText={onChange(name)}
           value={value}
           defaultValue={defaultValue}
-          secureTextEntry={!showText}
         />
       </View>
       {secure && (
