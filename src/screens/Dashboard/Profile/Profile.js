@@ -10,9 +10,18 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+// import {useDispatch} from 'react-redux';
+// import {logout} from '../../../redux/reducers/auth';
 
 const Profile = () => {
   const navigation = useNavigation();
+  // const dispatch = useDispatch();
+
+  const onLogout = () => {
+    // dispatch(logout());
+    navigation.navigate('Login');
+  };
+
   return (
     <>
       <ScrollView>
@@ -74,7 +83,7 @@ const Profile = () => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={onLogout}>
             <View style={styles.profCardContainer}>
               <View style={styles.profFlexCard}>
                 <Text style={styles.cardText}>Logout</Text>
