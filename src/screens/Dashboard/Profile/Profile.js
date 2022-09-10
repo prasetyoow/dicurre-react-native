@@ -9,18 +9,22 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
-// import {useDispatch} from 'react-redux';
-// import {logout} from '../../../redux/reducers/auth';
 
-const Profile = () => {
-  const navigation = useNavigation();
-  // const dispatch = useDispatch();
+// redux
+import {useDispatch} from 'react-redux';
+import {logout} from '../../../redux/reducers/auth';
 
-  const onLogout = () => {
-    // dispatch(logout());
-    navigation.navigate('Login');
+const Profile = ({navigation}) => {
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(logout());
+    // navigation.navigate('Login');
   };
+
+  // const onLogout = () => {
+  //   // dispatch(logout());
+  //   navigation.navigate('Login');
+  // };
 
   return (
     <>
@@ -83,7 +87,7 @@ const Profile = () => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={onLogout}>
+          <TouchableOpacity onPress={signOut}>
             <View style={styles.profCardContainer}>
               <View style={styles.profFlexCard}>
                 <Text style={styles.cardText}>Logout</Text>
