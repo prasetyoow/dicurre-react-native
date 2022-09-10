@@ -7,13 +7,75 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import * as Yup from 'yup';
+import {Formik} from 'formik';
 
 // components
 import CustomInput from '../../components/CustomInput';
+import {useDispatch, useSelector} from 'react-redux';
+import {register} from '../../redux/asyncActions/auth';
 // import CustomButton from '../../components/CustomButton';
+
+const signUpSchema = Yup.object().shape({
+  username: Yup.string().min(6).required('Required'),
+  email: Yup.string()
+    .email('Invalid email address format')
+    .required('Required'),
+  password: Yup.string().min(8).required('Required'),
+});
+
+const AuthValid = ({errors, handleChange, handleSubmit}) => {
+  return (
+    <>
+      <View style={styles.inputCustom}>
+        <CustomInput
+          placeholder="Enter your username"
+          icon="user"
+          type="email-address"
+          name="username"
+          onChange={handleChange}
+        />
+        <CustomInput
+          placeholder="Enter your e-mail"
+          icon="envelope"
+          type="email-address"
+          name="email"
+          onChange={handleChange}
+        />
+        <CustomInput
+          placeholder="Enter your password"
+          icon="lock"
+          type="text"
+          name="password"
+          secure={true}
+          onChange={handleChange}
+        />
+      </View>
+      <TouchableOpacity style={styles.containerButton} onPress={handleSubmit}>
+        <Text style={styles.textButton}>Signup</Text>
+      </TouchableOpacity>
+    </>
+  );
+};
 
 const SignupScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const successMsg = useSelector(state => state.auth.successMsg);
+  const onSignup = value => {
+    const data = {
+      username: value.username,
+      email: value.email,
+      password: value.password,
+    };
+    dispatch(register(data));
+  };
+
+  React.useEffect(() => {
+    if (successMsg) {
+      navigation.navigate('CreatePIN');
+    }
+  });
   return (
     // Header
     <>
@@ -28,20 +90,12 @@ const SignupScreen = () => {
           <Text style={styles.contentMuted}>
             Create your account to access Zwallet.
           </Text>
-          <View style={styles.inputCustom}>
-            <CustomInput placeholder="Enter your username" icon="user" />
-            <CustomInput placeholder="Enter your e-mail" icon="envelope" />
-            <CustomInput
-              placeholder="Enter your password"
-              icon="lock"
-              secureTextEntry={true}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.containerButton}
-            onPress={() => navigation.navigate('CreatePIN')}>
-            <Text style={styles.textButton}>Signup</Text>
-          </TouchableOpacity>
+          <Formik
+            validationSchema={signUpSchema}
+            initialValues={{username: '', email: '', password: ''}}
+            onSubmit={onSignup}>
+            {props => <AuthValid {...props} />}
+          </Formik>
           <Text style={styles.footer}>
             Already have an account?{' '}
             <TouchableOpacity onPress={() => navigation.push('Login')}>
