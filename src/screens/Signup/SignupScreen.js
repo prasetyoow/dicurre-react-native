@@ -14,6 +14,7 @@ import {Formik} from 'formik';
 import CustomInput from '../../components/CustomInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../../redux/asyncActions/auth';
+import {setTempEmail} from '../../redux/reducers/auth';
 // import CustomButton from '../../components/CustomButton';
 
 const signUpSchema = Yup.object().shape({
@@ -68,7 +69,9 @@ const SignupScreen = () => {
       email: value.email,
       password: value.password,
     };
+    // console.log(value);
     dispatch(register(data));
+    dispatch(setTempEmail(value.email));
   };
 
   React.useEffect(() => {
