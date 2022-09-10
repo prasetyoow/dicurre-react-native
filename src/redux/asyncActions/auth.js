@@ -15,6 +15,23 @@ import qs from 'qs';
 //   },
 // );
 
+export const register = createAsyncThunk('auth/register', async request => {
+  const results = {};
+  try {
+    const send = qs.stringify(request);
+    console.log(send);
+    const {data} = await http().post('auth/register', send);
+    console.log(data);
+    results.data = data.results;
+    results.message = data.message;
+    return results;
+  } catch (e) {
+    results.error = e.response.data.results[0].msg;
+    console.log(e.response.data.results[0].msg);
+    return results;
+  }
+});
+
 export const login = createAsyncThunk('auth/login', async request => {
   const results = {};
   try {

@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {login} from '../asyncActions/auth';
+import {login, register} from '../asyncActions/auth';
 
 const initialState = {
-  token: '',
+  token: null,
   id: '',
   errorMsg: '',
   successMsg: '',
@@ -28,6 +28,14 @@ const auth = createSlice({
     //     state.errorMsg = action.payload.message;
     //   }
     // });
+    build.addCase(register.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(register.fulfilled, (state, action) => {
+      state.errorMsg = action.payload?.error;
+      state.successMsg = action.payload?.message;
+    });
     build.addCase(login.pending, state => {
       state.errorMsg = null;
       state.successMsg = null;
@@ -44,6 +52,6 @@ const auth = createSlice({
   },
 });
 
-export const {logout} = auth.actions;
-export {login};
 export default auth.reducer;
+export {login, register};
+export const {logout} = auth.actions;
