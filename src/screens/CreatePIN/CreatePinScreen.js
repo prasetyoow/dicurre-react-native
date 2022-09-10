@@ -1,8 +1,10 @@
-import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import ReactNativePinView from 'react-native-pin-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {createpin} from '../../redux/asyncActions/auth';
 
 // components
 // import CustomButton from '../../components/CustomButton';
@@ -10,10 +12,12 @@ import {useNavigation} from '@react-navigation/native';
 
 const CreatePinScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const pinView = useRef(null);
   const [showRemoveButton, setShowRemoveButton] = useState(false);
   const [enteredPin, setEnteredPin] = useState('');
   const [showCompletedButton, setShowCompletedButton] = useState(false);
+  const tempEmail = useSelector(state => state.auth.tempEmail);
   useEffect(() => {
     if (enteredPin.length > 0) {
       setShowRemoveButton(true);
@@ -66,7 +70,9 @@ const CreatePinScreen = () => {
               pinView.current.clear();
             }
             if (key === 'custom_right') {
-              Alert.alert('Entered Pin: ' + enteredPin);
+              // Alert.alert('Entered Pin: ' + enteredPin);
+              dispatch(createpin({email: tempEmail, pin: enteredPin}));
+              navigation.navigate('Login');
             }
           }}
           customLeftButton={

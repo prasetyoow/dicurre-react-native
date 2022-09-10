@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {login, register} from '../asyncActions/auth';
+import {createpin, login, register} from '../asyncActions/auth';
 
 const initialState = {
   token: null,
@@ -7,15 +7,24 @@ const initialState = {
   errorMsg: '',
   successMsg: '',
   email: '',
+  tempEmail: null,
 };
 
 const auth = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
-  logout: () => {
-    return initialState;
+  reducers: {
+    logout: () => {
+      return initialState;
+    },
+    setTempEmail: (state, action) => {
+      state.tempEmail = action.payload;
+    },
+    resetTempEmail: state => {
+      state.tempEmail = null;
+    },
   },
+
   extraReducers: build => {
     // build.addCase(authAction.login.rejected, (state, action) => {
     // })
@@ -34,8 +43,18 @@ const auth = createSlice({
     });
     build.addCase(register.fulfilled, (state, action) => {
       state.errorMsg = action.payload?.error;
-      state.successMsg = action.payload?.message;
+      state.successMsg = action.payload?.success;
     });
+
+    build.addCase(createpin.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(createpin.fulfilled, (state, action) => {
+      state.errorMsg = action.payload?.error;
+      state.successMsg = action.payload?.success;
+    });
+
     build.addCase(login.pending, state => {
       state.errorMsg = null;
       state.successMsg = null;
@@ -52,6 +71,6 @@ const auth = createSlice({
   },
 });
 
-export default auth.reducer;
+export const {logout, resetTempEmail, setTempEmail} = auth.actions;
 export {login, register};
-export const {logout} = auth.actions;
+export default auth.reducer;
