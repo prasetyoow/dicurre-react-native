@@ -3,6 +3,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import ReactNativePinView from 'react-native-pin-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+// redux
 import {useSelector, useDispatch} from 'react-redux';
 import {createpin} from '../../redux/asyncActions/auth';
 

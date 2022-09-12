@@ -11,21 +11,20 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // redux
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../../redux/reducers/auth';
+import {getUserLogin} from '../../../redux/asyncActions/profile';
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile.data);
+  const token = useSelector(state => state.auth.token);
   const signOut = () => {
     dispatch(logout());
-    // navigation.navigate('Login');
   };
-
-  // const onLogout = () => {
-  //   // dispatch(logout());
-  //   navigation.navigate('Login');
-  // };
-
+  React.useEffect(() => {
+    dispatch(getUserLogin(token));
+  }, []);
   return (
     <>
       <ScrollView>
@@ -36,14 +35,26 @@ const Profile = ({navigation}) => {
         <View style={styles.profileFlex}>
           <Image
             style={styles.profileImage}
-            source={require('../../../assets/images/robert.png')}
+            source={
+              profile.picture === null
+                ? require('../../../assets/images/defaultProfile.png')
+                : {
+                    uri:
+                      'http://192.168.1.10:8888/public/uploads/' +
+                      profile.picture,
+                  }
+            }
           />
           <View style={styles.profEditFlex}>
             <Icon name="pencil" size={16} color="#7A7886" />
             <Text style={styles.editProf}>Edit</Text>
           </View>
-          <Text style={styles.profName}>Robert Chandler</Text>
-          <Text style={styles.profNum}>+62 813-9387-7946</Text>
+          <Text style={styles.profName}>
+            {profile.fullname === null ? '-' : profile.fullname}
+          </Text>
+          <Text style={styles.profNum}>
+            {profile.phone_number === null ? '-' : profile.phone_number}
+          </Text>
         </View>
 
         <View style={styles.profCardFlex}>
