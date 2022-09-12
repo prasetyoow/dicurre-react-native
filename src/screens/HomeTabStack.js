@@ -18,19 +18,18 @@ const HomeTabStack = () => {
   return (
     <BottomTab.Navigator>
       <BottomTab.Screen
-        options={
-          ({headerShown: false},
-          {
-            tabBarIcon: ({focused, color, size}) => (
-              <Icon name="home" size={size} color={color} />
-            ),
-          })
-        }
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="home" size={size} color={color} />
+          ),
+        }}
         name="Home"
         component={Home}
       />
       <BottomTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Icon name="money" size={size} color={color} />
           ),
@@ -40,6 +39,7 @@ const HomeTabStack = () => {
       />
       <BottomTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Icon name="plus" size={size} color={color} />
           ),
@@ -49,6 +49,7 @@ const HomeTabStack = () => {
       />
       <BottomTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Icon name="file-text-o" size={size} color={color} />
           ),
@@ -58,6 +59,7 @@ const HomeTabStack = () => {
       />
       <BottomTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <Icon name="user" size={size} color={color} />
           ),
