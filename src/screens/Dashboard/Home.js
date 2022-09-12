@@ -11,8 +11,18 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
+// redux
+import {getUserLogin} from '../../redux/asyncActions/profile';
+import {useDispatch, useSelector} from 'react-redux';
+
 const Home = () => {
   const navigation = useNavigation();
+  const profile = useSelector(state => state.profile.data);
+  const token = useSelector(state => state.auth.token);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getUserLogin(token));
+  }, []);
   return (
     <>
       <SafeAreaView>
@@ -23,12 +33,22 @@ const Home = () => {
               <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <Image
                   style={styles.profileImage}
-                  source={require('../../assets/images/robert.png')}
+                  source={
+                    profile.picture === null
+                      ? require('../../assets/images/defaultProfile.png')
+                      : {
+                          uri:
+                            'http://192.168.1.10:8888/public/uploads/' +
+                            profile.picture,
+                        }
+                  }
                 />
               </TouchableOpacity>
               <View style={styles.profileName}>
                 <Text>Hello,</Text>
-                <Text style={styles.userName}>Robert Chandler</Text>
+                <Text style={styles.userName}>
+                  {profile.fullname === null ? '-' : profile.fullname}
+                </Text>
               </View>
             </View>
             <TouchableOpacity style={styles.profileNotif}>
@@ -40,8 +60,12 @@ const Home = () => {
           <View style={styles.containerBalance}>
             <View style={styles.containerContentBalance}>
               <Text style={styles.textBalanceTop}>Balance</Text>
-              <Text style={styles.textBalanceMid}>Rp. 100.000</Text>
-              <Text style={styles.textBalanceBot}>+62 89618343727</Text>
+              <Text style={styles.textBalanceMid}>
+                {profile.balance === null ? '-' : profile.balance}
+              </Text>
+              <Text style={styles.textBalanceBot}>
+                {profile.phone_number === null ? '-' : profile.phone_number}
+              </Text>
             </View>
           </View>
 
@@ -185,8 +209,8 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     borderRadius: 10,
-    width: 52,
-    height: 52,
+    width: 70,
+    height: 70,
   },
   userName: {
     fontSize: 18,
