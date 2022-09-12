@@ -4,6 +4,7 @@ import {persistReducer} from 'redux-persist';
 
 // reducer
 import auth from './auth';
+import profile from './profile';
 
 const authConfig = {
   storage: AsyncStorage,
@@ -12,6 +13,7 @@ const authConfig = {
 
 const reducer = combineReducers({
   auth: persistReducer(authConfig, auth),
+  profile,
 });
 
 export default reducer;
