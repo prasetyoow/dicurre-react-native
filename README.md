@@ -31,7 +31,7 @@
 1. Download this repository or clone on your IDE ```https://github.com/prasetyoow/dicurre-react-native.git```
 2. Install node_modules using package manager (Yarn or NPM)
     * ```npm install```
-    * ```yarn install```
+    * ```yarn add```
 
 ## **How to Run**
 1. Type on your terminal
