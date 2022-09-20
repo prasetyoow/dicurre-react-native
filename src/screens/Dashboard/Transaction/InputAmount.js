@@ -3,16 +3,88 @@ import {
   Text,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
+// import InputTransfer from '../../../components/InputTransfer';
+import {getUserLogin} from '../../../redux/asyncActions/profile';
+import {getamount, getnotes} from '../../../redux/reducers/transactions';
 
-const InputAmount = () => {
-  const navigation = useNavigation();
+// validation
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {TextInput} from 'react-native-gesture-handler';
+
+const amountSchema = Yup.object().shape({
+  amount: Yup.number()
+    .min(20000, 'Minimum Transfer is IDR 20.000')
+    .max(1000000, 'Maximum Transfer is IDR 1.000.000')
+    .required('Please fill the amount'),
+});
+
+const AmountValid = ({handleChange, handleSubmit, errors, profile}) => {
+  return (
+    <>
+      <Text style={styles.amountAvail}>{profile.balance} Available</Text>
+
+      <TextInput
+        onChangeText={handleChange}
+        style={styles.amountInput}
+        placeholder="0,00"
+        name="amount"
+        keyboardType="numeric"
+      />
+      <View style={styles.formAmountFlex}>
+        <Icon
+          style={styles.iconForm}
+          name="pencil"
+          size={24}
+          color="#A9A9A999"
+        />
+        <TextInput
+          onChangeText={handleChange}
+          style={styles.textInputTransfer}
+          placeholder="Add some notes"
+          name="notes"
+          keyboardType="text"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.containerButton} onPress={handleSubmit}>
+        <Text style={styles.textButton}>Confirm</Text>
+      </TouchableOpacity>
+    </>
+  );
+};
+
+const InputAmount = ({navigation}) => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.token);
+  const name = useSelector(state => state.transactions.name);
+  const phone = useSelector(state => state.transactions.phone);
+  console.log(phone + 'ini phone');
+  const profile = useSelector(state => state.profile.data);
+  // const image = useSelector(state => state.transactions.image);
+  // const receiver = useSelector(state => state.transactions.receiver);
+  const onConfirm = val => {
+    if (parseInt(val.amount, 10) < parseInt(profile.balance, 10)) {
+      dispatch(getamount(val.amount));
+      dispatch(getnotes(val.notes));
+      navigation.navigate('Confirmation');
+    } else {
+      Alert.alert('Balance insufficient');
+    }
+    navigation.navigate('Confirmation');
+  };
+  React.useEffect(() => {
+    dispatch(getUserLogin(token));
+  }, [dispatch, token]);
   return (
     <>
       {/* Top Navigation */}
@@ -27,45 +99,43 @@ const InputAmount = () => {
             <View style={styles.profHistoryFlex}>
               <Image
                 style={styles.dataHistoryImage}
-                source={require('../../../assets/images/suhi.png')}
+                source={
+                  profile.picture === null
+                    ? require('../../../assets/images/defaultProfile.png')
+                    : {
+                        uri:
+                          'http://192.168.1.10:8888/public/uploads/' +
+                          profile.picture,
+                      }
+                }
               />
               <View>
-                <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
+                <Text style={styles.dataNameHistory}>{name}</Text>
+                <Text style={styles.textMutedHistory}>{phone}</Text>
               </View>
             </View>
           </View>
         </View>
-
-        <View>
-          <Text style={styles.amountAvail}>Rp. 120.000 Available</Text>
-          <TextInput
-            style={styles.textInputTransfer}
-            placeholder="0,00"
-            keyboardType="numeric"
-          />
-          <View style={styles.textInputFlex}>
-            <Icon
-              style={styles.iconForm}
-              name="pencil"
-              size={24}
-              color="#A9A9A999"
-            />
-            <TextInput placeholder="Add some notes" />
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={styles.containerButton}
-          onPress={() => navigation.navigate('Confirmation')}>
-          <Text style={styles.textButton}>Confirm</Text>
-        </TouchableOpacity>
+        <Formik
+          initialValues={{amount: '', notes: ''}}
+          validationSchema={amountSchema}
+          onSubmit={onConfirm}>
+          {props => <AmountValid {...props} profile={profile} />}
+        </Formik>
       </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  amountInput: {
+    fontSize: 42,
+    textAlign: 'center',
+  },
+  formAmountFlex: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
   topTransferContainer: {
     flexDirection: 'row',
     marginTop: 30,
@@ -119,7 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   textInputTransfer: {
-    fontSize: 42,
+    fontSize: 16,
     textAlign: 'center',
     marginBottom: 30,
   },

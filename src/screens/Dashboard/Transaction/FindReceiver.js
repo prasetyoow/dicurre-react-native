@@ -3,141 +3,79 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Image,
-  SafeAreaView,
-  ScrollView,
   TouchableOpacity,
+  FlatList,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import ListContact from '../../../components/ListContact';
+
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getAllProfile,
+  getname,
+  getphone,
+  getimage,
+  getreceiver,
+} from '../../../redux/reducers/transactions';
+import {SafeAreaView} from 'react-navigation';
 
 const FindReceiver = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const profiles = useSelector(state => state.transactions?.results);
+  console.log(profiles);
+  // const totalData = useSelector(state => state.transactions?.totalData);
+  const passData = item => {
+    dispatch(getname(item.fullname));
+    dispatch(getphone(item.phone_number));
+    dispatch(getimage(item.picture));
+    dispatch(getreceiver(item.user_id));
+    navigation.navigate('InputAmount');
+  };
+  React.useEffect(() => {
+    dispatch(getAllProfile());
+  }, [dispatch]);
   return (
     <>
-      <SafeAreaView>
-        <ScrollView>
-          {/* Top Navigation */}
-          <View style={styles.topReceiverContainer}>
-            <Icon name="arrow-left" size={30} color="#4D4B57" />
-            <Text style={styles.textTop}>Find Receiver</Text>
+      {/* <SafeAreaView> */}
+      {/* <ScrollView> */}
+      {/* Top Navigation */}
+      <View style={styles.topReceiverContainer}>
+        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <Text style={styles.textTop}>Find Receiver</Text>
+      </View>
+
+      {/* Input search receiver */}
+      <View style={styles.formFlex}>
+        <Icon style={styles.iconForm} name="search" size={20} color="#A9A9A9" />
+        <TextInput style={styles.textForm} placeholder="Search receiver here" />
+      </View>
+
+      {/* All Contact */}
+      <FlatList
+        ListHeaderComponent={
+          <View style={styles.padding}>
+            <Text style={styles.textMid}>All Contact</Text>
+            <Text style={styles.textMuted}>17 Contacts Found</Text>
           </View>
-
-          {/* Input search receiver */}
-          <View style={styles.formFlex}>
-            <Icon
-              style={styles.iconForm}
-              name="search"
-              size={20}
-              color="#A9A9A9"
-            />
-            <TextInput
-              style={styles.textForm}
-              placeholder="Search receiver here"
-            />
-          </View>
-
-          {/* Quick Access */}
-          <Text style={styles.textMid}>Quick Access</Text>
-
-          {/* Quick Contact */}
-          <View style={styles.contactFlex}>
-            <View style={styles.contactContainer}>
-              <Image
-                style={styles.contactImage}
-                source={require('../../../assets/images/jessica.png')}
-              />
-              <Text style={styles.textName}>Michi</Text>
-              <Text style={styles.textPhone}>-9994</Text>
-            </View>
-            <View style={styles.contactContainer}>
-              <Image
-                style={styles.contactImage}
-                source={require('../../../assets/images/momo.png')}
-              />
-              <Text style={styles.textName}>Dody</Text>
-              <Text style={styles.textPhone}>-3561</Text>
-            </View>
-            <View style={styles.contactContainer}>
-              <Image
-                style={styles.contactImage}
-                source={require('../../../assets/images/rian.png')}
-              />
-              <Text style={styles.textName}>Rian</Text>
-              <Text style={styles.textPhone}>-3822</Text>
-            </View>
-          </View>
-
-          {/* All Contact */}
-          <Text style={styles.textMid}>All Contact</Text>
-          <Text style={styles.textMuted}>17 Contacts Found</Text>
-
-          <TouchableOpacity onPress={() => navigation.navigate('InputAmount')}>
-            <View style={styles.dataHistoryContainer}>
-              <View style={styles.dataHistoryFlex}>
-                <View style={styles.profHistoryFlex}>
-                  <Image
-                    style={styles.dataHistoryImage}
-                    source={require('../../../assets/images/suhi.png')}
-                  />
-                  <View style={styles.textHistoryFlex}>
-                    <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                    <Text style={styles.textMutedHistory}>
-                      +62 813-8492-9994
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/jessica.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Julia Syen</Text>
-                  <Text style={styles.textMutedHistory}>+62 812-3942-3656</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/bobi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-                  <Text style={styles.textMutedHistory}>+62 813-5982-2940</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/juliana.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Juliana Rich</Text>
-                  <Text style={styles.textMutedHistory}>+62 811-6212-5663</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        }
+        data={profiles}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity onPress={() => passData(item)}>
+              <ListContact item={item} />
+            </TouchableOpacity>
+          );
+        }}
+        keyExtractor={item => String(item.id)}
+        contentContainerStyle={styles.padding}
+      />
+      {/* </ScrollView> */}
+      {/* </SafeAreaView> */}
     </>
   );
 };
@@ -240,6 +178,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 18,
     fontWeight: '700',
+  },
+  padding: {
+    padding: 10,
   },
 });
 
