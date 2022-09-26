@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'http://192.168.1.10:8888/';
-// const url = 'http://localhost:8888';
+const url = 'http://192.168.1.10:8787/';
+// const url = 'http://localhost:8787';
 // const url = 'https://fazzpay.herokuapp.com/';
 
 const http = token => {

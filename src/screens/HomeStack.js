@@ -10,6 +10,7 @@ import InputAmount from '../screens/Dashboard/Transaction/InputAmount';
 import Confirmation from '../screens/Dashboard/Transaction/Confirmation';
 import EnterPIN from '../screens/Dashboard/Transaction/EnterPIN';
 import TransferSuccess from '../screens/Dashboard/Transaction/TransferSuccess';
+import TransferFailed from '../screens/Dashboard/Transaction/TransferFailed';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,11 +20,6 @@ const HomeStack = () => {
       <Stack.Screen
         name="HomeTab"
         component={HomeTabStack}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Details"
-        component={Details}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -64,6 +60,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="TransferSuccess"
         component={TransferSuccess}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TransferFailed"
+        component={TransferFailed}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
