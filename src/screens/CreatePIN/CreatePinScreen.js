@@ -8,6 +8,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {createpin} from '../../redux/asyncActions/auth';
 
 // components
+import {PRIMARY_COLOR} from '../../assets/styles/coloring';
 // import CustomButton from '../../components/CustomButton';
 // import CodePin from 'react-native-pin-code';
 
@@ -36,7 +37,7 @@ const CreatePinScreen = () => {
     <>
       {/* // Header */}
       <View style={styles.containerTop}>
-        <Text style={styles.topLogo}>Zwallet</Text>
+        <Text style={styles.topLogo}>Dicurre</Text>
       </View>
       {/* // Content */}
       <View style={styles.containerContent}>
@@ -53,18 +54,18 @@ const CreatePinScreen = () => {
           // eslint-disable-next-line react-native/no-inline-styles
           inputViewEmptyStyle={{
             backgroundColor: 'white',
-            borderColor: '#A9A9A999',
+            borderColor: 'black',
             borderWidth: 1,
           }}
           onValueChange={value => setEnteredPin(value)}
           // eslint-disable-next-line react-native/no-inline-styles
           buttonViewStyle={{
             borderWidth: 1,
-            borderColor: '#6379F4',
+            borderColor: PRIMARY_COLOR,
           }}
           // eslint-disable-next-line react-native/no-inline-styles
           buttonTextStyle={{
-            color: '#6379F4',
+            color: PRIMARY_COLOR,
           }}
           onButtonPress={key => {
             if (key === 'custom_left') {
@@ -99,14 +100,13 @@ const CreatePinScreen = () => {
 
 const styles = StyleSheet.create({
   containerTop: {
-    backgroundColor: 'rgba(99, 121, 244, 0.2)',
     alignItems: 'center',
     padding: 80,
   },
   topLogo: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
   containerContent: {
     backgroundColor: 'white',
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 15,
     marginLeft: 20,
@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
   },
   pinBorder: {
     borderWidth: 1,
-    borderColor: '#6379F4',
-    backgroundColor: '#6379F4',
+    borderColor: PRIMARY_COLOR,
+    backgroundColor: PRIMARY_COLOR,
   },
 });
 

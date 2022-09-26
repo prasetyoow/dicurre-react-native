@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
 // components
+import {PRIMARY_COLOR} from '../../assets/styles/coloring';
 // import CustomButton from '../../components/CustomButton';
 // import CodePin from 'react-native-pin-code';
 
@@ -14,7 +15,7 @@ const CreatePinScreen = () => {
     <>
       {/* // Header */}
       <View style={styles.containerTop}>
-        <Text style={styles.topLogo}>Zwallet</Text>
+        <Text style={styles.topLogo}>Dicurre</Text>
       </View>
       {/* // Content */}
       <View style={styles.containerContent}>
@@ -42,14 +43,13 @@ const CreatePinScreen = () => {
 
 const styles = StyleSheet.create({
   containerTop: {
-    backgroundColor: 'rgba(99, 121, 244, 0.2)',
     alignItems: 'center',
     padding: 150,
   },
   topLogo: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
   iconContainer: {
     width: 70,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     color: 'rgba(58, 61, 66, 0.6)',
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 15,
     marginLeft: 20,

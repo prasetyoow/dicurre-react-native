@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,7 +20,6 @@ import {
   getimage,
   getreceiver,
 } from '../../../redux/reducers/transactions';
-import {SafeAreaView} from 'react-navigation';
 
 const FindReceiver = () => {
   const dispatch = useDispatch();

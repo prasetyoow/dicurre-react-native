@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import {Formik} from 'formik';
 
 // components
+import {PRIMARY_COLOR} from '../../assets/styles/coloring';
 import CustomInput from '../../components/CustomInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../../redux/asyncActions/auth';
@@ -85,7 +86,7 @@ const SignupScreen = () => {
       {/* // Header */}
       <ScrollView>
         <View style={styles.containerTop}>
-          <Text style={styles.topLogo}>Zwallet</Text>
+          <Text style={styles.topLogo}>Dicurre</Text>
         </View>
         {/* // Content */}
         <View style={styles.containerContent}>
@@ -113,14 +114,13 @@ const SignupScreen = () => {
 
 const styles = StyleSheet.create({
   containerTop: {
-    backgroundColor: 'rgba(99, 121, 244, 0.2)',
     alignItems: 'center',
     padding: 80,
   },
   topLogo: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
   containerContent: {
     backgroundColor: 'white',
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 15,
     marginLeft: 20,

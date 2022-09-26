@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React from 'react';
 // import {useNavigation} from '@react-navigation/native';
-
+import {PRIMARY_COLOR, HOVER_COLOR} from '../../assets/styles/coloring';
 import {Formik, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 
@@ -98,7 +98,7 @@ const LoginScreen = ({navigation}) => {
       {errorMsg && <Text style={styles.errorMessage}>{errorMsg}</Text>} */}
       <ScrollView>
         <View style={styles.containerTop}>
-          <Text style={styles.topLogo}>Zwallet</Text>
+          <Text style={styles.topLogo}>Dicurre</Text>
         </View>
         {/* // Content */}
         <View style={styles.containerContent}>
@@ -121,14 +121,13 @@ const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   containerTop: {
-    backgroundColor: 'rgba(99, 121, 244, 0.2)',
     alignItems: 'center',
     padding: 80,
   },
   topLogo: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
   containerContent: {
     backgroundColor: 'white',
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 24,
     fontWeight: '700',
-    color: '#3A3D42',
+    color: 'black',
   },
   contentMuted: {
     marginTop: 30,
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 15,
     marginLeft: 20,

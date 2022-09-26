@@ -9,10 +9,24 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 
-const TransferSuccess = () => {
-  const navigation = useNavigation();
+// redux
+import {useSelector} from 'react-redux';
+
+const TransferSuccess = ({navigation}) => {
+  const name = useSelector(state => state.transactions.name);
+  const phone = useSelector(state => state.transactions.phone);
+  const profile = useSelector(state => state.profile.data);
+  const amount = useSelector(state => state.transactions.amount);
+  const notes = useSelector(state => state.transactions.notes);
+  const date = new Date().toISOString();
+  const dateOnly = date.slice(0, 10);
+  const hour = date.slice(11, 16);
+  const slicedMoney = profile.balance
+    .slice('2')
+    .replace('.', '')
+    .replace('.', '');
   return (
     <>
       <SafeAreaView>
@@ -28,22 +42,26 @@ const TransferSuccess = () => {
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Amount</Text>
-            <Text style={styles.textAmountTransfer}>Rp. 100.000</Text>
+            <Text style={styles.textAmountTransfer}>Rp. {amount}</Text>
           </View>
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Balance Left</Text>
-            <Text style={styles.textAmountTransfer}>Rp. 20.000</Text>
+            <Text style={styles.textAmountTransfer}>
+              Rp. {slicedMoney - amount}
+            </Text>
           </View>
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Date & Time</Text>
-            <Text style={styles.textAmountTransfer}>May 11, 2020 - 12.20</Text>
+            <Text style={styles.textAmountTransfer}>
+              {dateOnly + ' ' + hour}
+            </Text>
           </View>
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Notes</Text>
-            <Text style={styles.textAmountTransfer}>For buying some socks</Text>
+            <Text style={styles.textAmountTransfer}>{notes}</Text>
           </View>
 
           <Text style={styles.textMid}>Transfer to</Text>
@@ -53,11 +71,11 @@ const TransferSuccess = () => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/suhi.png')}
+                  source={require('../../../assets/images/defaultProfile.png')}
                 />
                 <View>
-                  <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                  <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
+                  <Text style={styles.dataNameHistory}>{name}</Text>
+                  <Text style={styles.textMutedHistory}>{phone}</Text>
                 </View>
               </View>
             </View>
@@ -144,7 +162,7 @@ const styles = StyleSheet.create({
     color: '#514F5B',
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 20,
     marginLeft: 20,

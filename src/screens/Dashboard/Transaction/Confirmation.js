@@ -1,10 +1,35 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
 
-const Confirmation = () => {
-  const navigation = useNavigation();
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {getdate, resetmsg} from '../../../redux/reducers/transactions';
+
+const Confirmation = ({navigation}) => {
+  const dispatch = useDispatch();
+  // const token = useSelector(state => state.auth.token);
+  const name = useSelector(state => state.transactions.name);
+  const phone = useSelector(state => state.transactions.phone);
+  const profile = useSelector(state => state.profile.data);
+  const amount = useSelector(state => state.transactions.amount);
+  const notes = useSelector(state => state.transactions.notes);
+  const date = new Date().toISOString();
+  const dateOnly = date.slice(0, 10);
+  const hour = date.slice(11, 16);
+  const slicedMoney = profile.balance
+    .slice('2')
+    .replace('.', '')
+    .replace('.', '');
+  console.log(slicedMoney);
+  const onSubmit = val => {
+    dispatch(getdate(date));
+    navigation.navigate('EnterPIN');
+  };
+  React.useEffect(() => {
+    dispatch(resetmsg());
+  }, [dispatch]);
   return (
     <>
       {/* Top Navigation */}
@@ -20,11 +45,11 @@ const Confirmation = () => {
           <View style={styles.profHistoryFlex}>
             <Image
               style={styles.dataHistoryImage}
-              source={require('../../../assets/images/suhi.png')}
+              source={require('../../../assets/images/defaultProfile.png')}
             />
             <View>
-              <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-              <Text style={styles.textMutedHistory}>+62 813-8492-9994</Text>
+              <Text style={styles.dataNameHistory}>{name}</Text>
+              <Text style={styles.textMutedHistory}>{phone}</Text>
             </View>
           </View>
         </View>
@@ -34,27 +59,27 @@ const Confirmation = () => {
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Amount</Text>
-        <Text style={styles.textAmountTransfer}>Rp. 100.000</Text>
+        <Text style={styles.textAmountTransfer}>Rp. {amount}</Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Balance Left</Text>
-        <Text style={styles.textAmountTransfer}>Rp. 20.000</Text>
+        <Text style={styles.textAmountTransfer}>
+          Rp. {slicedMoney - amount}
+        </Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Date & Time</Text>
-        <Text style={styles.textAmountTransfer}>May 11, 2020 - 12.20</Text>
+        <Text style={styles.textAmountTransfer}>{dateOnly + ' ' + hour}</Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Notes</Text>
-        <Text style={styles.textAmountTransfer}>For buying some socks</Text>
+        <Text style={styles.textAmountTransfer}>{notes}</Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.containerButton}
-        onPress={() => navigation.navigate('EnterPIN')}>
+      <TouchableOpacity style={styles.containerButton} onPress={onSubmit}>
         <Text style={styles.textButton}>Continue</Text>
       </TouchableOpacity>
     </>
@@ -124,7 +149,7 @@ const styles = StyleSheet.create({
     color: '#514F5B',
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 20,
     marginLeft: 20,

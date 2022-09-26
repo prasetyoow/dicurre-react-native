@@ -4,8 +4,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -28,37 +28,50 @@ const amountSchema = Yup.object().shape({
     .required('Please fill the amount'),
 });
 
-const AmountValid = ({handleChange, handleSubmit, errors, profile}) => {
+const AmountValid = ({
+  handleChange,
+  handleSubmit,
+  errors,
+  value,
+  defaultValue,
+  profile,
+}) => {
   return (
     <>
-      <Text style={styles.amountAvail}>{profile.balance} Available</Text>
-
-      <TextInput
-        onChangeText={handleChange}
-        style={styles.amountInput}
-        placeholder="0,00"
-        name="amount"
-        keyboardType="numeric"
-      />
-      <View style={styles.formAmountFlex}>
-        <Icon
-          style={styles.iconForm}
-          name="pencil"
-          size={24}
-          color="#A9A9A999"
-        />
+      <View>
+        <Text style={styles.amountAvail}>{profile.balance} Available</Text>
         <TextInput
-          onChangeText={handleChange}
-          style={styles.textInputTransfer}
-          placeholder="Add some notes"
-          name="notes"
-          keyboardType="text"
+          onChangeText={handleChange('amount')}
+          style={styles.amountInput}
+          placeholder="0,00"
+          keyboardType="numeric"
+          value={value}
+          defaultValue={defaultValue}
         />
+        <View style={styles.formAmountFlex}>
+          <Icon
+            style={styles.iconForm}
+            name="pencil"
+            size={24}
+            color="#A9A9A999"
+          />
+          <TextInput
+            onChangeText={handleChange('notes')}
+            style={styles.textInputTransfer}
+            placeholder="Add some notes"
+            keyboardType="text"
+            value={value}
+            defaultValue={defaultValue}
+          />
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.containerButton}
+            onPress={handleSubmit}>
+            <Text style={styles.textButton}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <TouchableOpacity style={styles.containerButton} onPress={handleSubmit}>
-        <Text style={styles.textButton}>Confirm</Text>
-      </TouchableOpacity>
     </>
   );
 };
@@ -68,12 +81,18 @@ const InputAmount = ({navigation}) => {
   const token = useSelector(state => state.auth.token);
   const name = useSelector(state => state.transactions.name);
   const phone = useSelector(state => state.transactions.phone);
-  console.log(phone + 'ini phone');
   const profile = useSelector(state => state.profile.data);
   // const image = useSelector(state => state.transactions.image);
   // const receiver = useSelector(state => state.transactions.receiver);
+  const slicedMoney = profile.balance
+    .slice('2')
+    .replace('.', '')
+    .replace('.', '');
+  console.log(slicedMoney);
   const onConfirm = val => {
-    if (parseInt(val.amount, 10) < parseInt(profile.balance, 10)) {
+    console.log(val.amount + 'ini amount');
+    console.log(val.notes + 'ini notes');
+    if (parseInt(val.amount, 10) < parseInt(slicedMoney, 10)) {
       dispatch(getamount(val.amount));
       dispatch(getnotes(val.notes));
       navigation.navigate('Confirmation');
@@ -86,9 +105,9 @@ const InputAmount = ({navigation}) => {
     dispatch(getUserLogin(token));
   }, [dispatch, token]);
   return (
-    <>
+    <ScrollView>
       {/* Top Navigation */}
-      <ScrollView>
+      <View>
         <View style={styles.topTransferContainer}>
           <Icon name="arrow-left" size={30} color="#4D4B57" />
           <Text style={styles.textTop}>Transfer</Text>
@@ -104,7 +123,7 @@ const InputAmount = ({navigation}) => {
                     ? require('../../../assets/images/defaultProfile.png')
                     : {
                         uri:
-                          'http://192.168.1.10:8888/public/uploads/' +
+                          'http://192.168.1.10:8787/public/uploads/' +
                           profile.picture,
                       }
                 }
@@ -122,8 +141,8 @@ const InputAmount = ({navigation}) => {
           onSubmit={onConfirm}>
           {props => <AmountValid {...props} profile={profile} />}
         </Formik>
-      </ScrollView>
-    </>
+      </View>
+    </ScrollView>
   );
 };
 
