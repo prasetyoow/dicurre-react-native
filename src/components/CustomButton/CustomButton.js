@@ -1,4 +1,5 @@
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {PRIMARY_COLOR, HOVER_COLOR} from '../../assets/styles/coloring';
 import React from 'react';
 
 const CustomButton = ({onPress, text}) => {
@@ -11,7 +12,7 @@ const CustomButton = ({onPress, text}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 15,
     marginLeft: 20,

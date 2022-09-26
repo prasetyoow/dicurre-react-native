@@ -1,6 +1,7 @@
 import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {PRIMARY_COLOR} from '../../assets/styles/coloring';
 
 const CustomInput = ({
   placeholder,
@@ -16,7 +17,7 @@ const CustomInput = ({
   return (
     <View style={styles.container}>
       <View style={styles.iconInput}>
-        <Icon name={icon} size={24} color="#2F3163" />
+        <Icon name={icon} size={24} color={PRIMARY_COLOR} />
       </View>
       <View style={styles.textInput}>
         <TextInput
