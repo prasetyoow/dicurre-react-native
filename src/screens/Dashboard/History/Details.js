@@ -3,51 +3,108 @@ import {
   Text,
   StyleSheet,
   Image,
-  SafeAreaView,
-  ScrollView,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ListHistory from '../../../components/ListHistory';
+
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {getHistoryTransaction} from '../../../redux/asyncActions/transactions';
+import {useNavigation} from '@react-navigation/native';
 
 const Details = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.token);
+  const data = useSelector(state => state.transactions.results);
+
+  React.useEffect(() => {
+    dispatch(getHistoryTransaction(token));
+  }, [dispatch, token]);
   return (
     <>
-      <SafeAreaView>
-        <ScrollView>
-          {/* Top Navigation */}
-          <View style={styles.topDetailContainer}>
-            <Icon name="arrow-left" size={30} color="#4D4B57" />
-            <Text style={styles.textTop}>Transaction</Text>
-          </View>
-          {/* Top Mid Content */}
-          <View style={styles.topMidContainer}>
-            <View style={styles.expenseFlex}>
-              <Icon name="arrow-down" size={28} color="#1EC15F" />
-              <Text style={styles.textMuted}>Income</Text>
-              <Text style={styles.textWhite}>Rp. 2.120.000</Text>
+      {/* Top Navigation */}
+      <View style={styles.topDetailContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
+        <Text style={styles.textTop}>Transaction</Text>
+      </View>
+      {/* Top Mid Content */}
+      {/* <View style={styles.topMidContainer}>
+        <View style={styles.expenseFlex}>
+          <Icon name="arrow-down" size={28} color="#1EC15F" />
+          <Text style={styles.textMuted}>Income</Text>
+          <Text style={styles.textWhite}>Rp. 2.120.000</Text>
+        </View>
+        <View style={styles.expenseFlex}>
+          <Icon name="arrow-down" size={28} color="#FF5B37" />
+          <Text style={styles.textMuted}>Expense</Text>
+          <Text style={styles.textWhite}>Rp. 1.560.000</Text>
+        </View>
+      </View>
+      <View /> */}
+
+      {/* Graphic */}
+      {/* <Text style={styles.textWeek}>In This Week</Text>
+      <Image
+        style={styles.graphImage}
+        source={require('../../../assets/images/graphic.png')}
+      /> */}
+
+      {/* Transaction History */}
+      {/* <View style={styles.historyFlex}>
+        <Text style={styles.historyTransText}>Transaction History</Text>
+        <Text style={styles.historyLink}>See all</Text>
+      </View> */}
+
+      {/* Mapping history transactions */}
+      <FlatList
+        ListHeaderComponent={
+          <>
+            {/* Top Mid Content */}
+            <View style={styles.topMidContainer}>
+              <View style={styles.expenseFlex}>
+                <Icon name="arrow-down" size={28} color="#1EC15F" />
+                <Text style={styles.textMuted}>Income</Text>
+                <Text style={styles.textWhite}>Rp. 2.120.000</Text>
+              </View>
+              <View style={styles.expenseFlex}>
+                <Icon name="arrow-down" size={28} color="#FF5B37" />
+                <Text style={styles.textMuted}>Expense</Text>
+                <Text style={styles.textWhite}>Rp. 1.560.000</Text>
+              </View>
             </View>
-            <View style={styles.expenseFlex}>
-              <Icon name="arrow-down" size={28} color="#FF5B37" />
-              <Text style={styles.textMuted}>Expense</Text>
-              <Text style={styles.textWhite}>Rp. 1.560.000</Text>
+            <View />
+            {/* Graphic */}
+            <Text style={styles.textWeek}>In This Week</Text>
+            <Image
+              style={styles.graphImage}
+              source={require('../../../assets/images/graphic.png')}
+            />
+            {/* Transaction History */}
+            <View style={styles.historyFlex}>
+              <Text style={styles.historyTransText}>Transaction History</Text>
+              <Text style={styles.historyLink}>See all</Text>
             </View>
-          </View>
-          <View />
-
-          {/* Graphic */}
-          <Text style={styles.textWeek}>In This Week</Text>
-          <Image
-            style={styles.graphImage}
-            source={require('../../../assets/images/graphic.png')}
-          />
-
-          {/* Transaction History */}
-          <View style={styles.historyFlex}>
-            <Text style={styles.historyTransText}>Transaction History</Text>
-            <Text style={styles.historyLink}>See all</Text>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
+          </>
+        }
+        data={data}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TransferSuccess')}>
+              <ListHistory item={item} />
+            </TouchableOpacity>
+          );
+        }}
+        keyExtractor={item => String(item.id)}
+        contentContainerStyle={styles.padding}
+      />
+      {/* <View style={styles.dataHistoryContainer}>
             <View style={styles.dataHistoryFlex}>
               <View style={styles.profHistoryFlex}>
                 <Image
@@ -135,9 +192,7 @@ const Details = () => {
                 <Text style={styles.dataSuccess}>+Rp.50.000</Text>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </View> */}
     </>
   );
 };

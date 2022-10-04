@@ -4,105 +4,124 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  SafeAreaView,
-  ScrollView,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import ListHistory from '../../components/ListHistory';
 
 // redux
 import {getUserLogin} from '../../redux/asyncActions/profile';
 import {useDispatch, useSelector} from 'react-redux';
+import {getHistoryTransaction} from '../../redux/asyncActions/transactions';
 
 const Home = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.data);
   const token = useSelector(state => state.auth.token);
-  const dispatch = useDispatch();
+  const data = useSelector(state => state.transactions.results);
+
   React.useEffect(() => {
     dispatch(getUserLogin(token));
-  }, []);
+    dispatch(getHistoryTransaction(token));
+  }, [dispatch, token]);
   return (
     <>
-      <SafeAreaView>
-        <ScrollView>
-          {/* Profile */}
-          <View style={styles.profileSection}>
-            <View style={styles.profileFlex}>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <Image
-                  style={styles.profileImage}
-                  source={
-                    profile.picture === null
-                      ? require('../../assets/images/defaultProfile.png')
-                      : {
-                          uri:
-                            'http://192.168.1.10:8787/public/uploads/' +
-                            profile.picture,
-                        }
-                  }
-                />
-              </TouchableOpacity>
-              <View style={styles.profileName}>
-                <Text>Hello,</Text>
-                <Text style={styles.userName}>
-                  {profile.fullname === null ? '-' : profile.fullname}
-                </Text>
+      {/* <SafeAreaView>
+        <ScrollView> */}
+      {/* Profile */}
+      <View style={styles.profileSection}>
+        <View style={styles.profileFlex}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <Image
+              style={styles.profileImage}
+              source={
+                profile.picture === null
+                  ? require('../../assets/images/defaultProfile.png')
+                  : {
+                      uri:
+                        'http://192.168.1.10:8787/public/uploads/' +
+                        profile.picture,
+                    }
+              }
+            />
+          </TouchableOpacity>
+          <View style={styles.profileName}>
+            <Text>Hello,</Text>
+            <Text style={styles.userName}>
+              {profile.fullname === null ? '-' : profile.fullname}
+            </Text>
+          </View>
+        </View>
+        <TouchableOpacity style={styles.profileNotif}>
+          <Icon name="bell" size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Balance */}
+      <View style={styles.containerBalance}>
+        <View style={styles.containerContentBalance}>
+          <Text style={styles.textBalanceTop}>Balance</Text>
+          <Text style={styles.textBalanceMid}>
+            {profile.balance === null ? '-' : profile.balance}
+          </Text>
+          <Text style={styles.textBalanceBot}>
+            {profile.phone_number === null ? '-' : profile.phone_number}
+          </Text>
+        </View>
+      </View>
+
+      {/* Top up */}
+      <View style={styles.containerTopUpFlex}>
+        <TouchableOpacity onPress={() => navigation.navigate('Transfer')}>
+          <View style={styles.containerTopUp}>
+            <View style={styles.contentTopup}>
+              <View style={styles.transferFlex}>
+                <Icon name="arrow-up" size={24} color="#608DE2" />
+                <Text style={styles.textTransfer}>Transfer</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.profileNotif}>
-              <Icon name="bell" size={24} color="gray" />
-            </TouchableOpacity>
           </View>
+        </TouchableOpacity>
 
-          {/* Balance */}
-          <View style={styles.containerBalance}>
-            <View style={styles.containerContentBalance}>
-              <Text style={styles.textBalanceTop}>Balance</Text>
-              <Text style={styles.textBalanceMid}>
-                {profile.balance === null ? '-' : profile.balance}
-              </Text>
-              <Text style={styles.textBalanceBot}>
-                {profile.phone_number === null ? '-' : profile.phone_number}
-              </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('TopUp')}>
+          <View style={styles.containerTopUp}>
+            <View style={styles.contentTopup}>
+              <View style={styles.transferFlex}>
+                <Icon name="plus" size={24} color="#608DE2" />
+                <Text style={styles.textTransfer}>Top Up</Text>
+              </View>
             </View>
           </View>
+        </TouchableOpacity>
+      </View>
 
-          {/* Top up */}
-          <View style={styles.containerTopUpFlex}>
-            <TouchableOpacity onPress={() => navigation.navigate('Transfer')}>
-              <View style={styles.containerTopUp}>
-                <View style={styles.contentTopup}>
-                  <View style={styles.transferFlex}>
-                    <Icon name="arrow-up" size={24} color="#608DE2" />
-                    <Text style={styles.textTransfer}>Transfer</Text>
-                  </View>
-                </View>
-              </View>
+      {/* Transaction History */}
+      <View style={styles.historyFlex}>
+        <Text style={styles.historyTransText}>Transaction History</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Details')}>
+          <Text style={styles.historyLink}>See all</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Mapping History Transactions */}
+
+      <FlatList
+        data={data}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TransferSuccess')}>
+              <ListHistory item={item} />
             </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate('TopUp')}>
-              <View style={styles.containerTopUp}>
-                <View style={styles.contentTopup}>
-                  <View style={styles.transferFlex}>
-                    <Icon name="plus" size={24} color="#608DE2" />
-                    <Text style={styles.textTransfer}>Top Up</Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          {/* Transaction History */}
-          <View style={styles.historyFlex}>
-            <Text style={styles.historyTransText}>Transaction History</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Details')}>
-              <Text style={styles.historyLink}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
+          );
+        }}
+        keyExtractor={item => String(item.id)}
+        contentContainerStyle={styles.padding}
+      />
+      {/* <View style={styles.dataHistoryContainer}>
             <View style={styles.dataHistoryFlex}>
               <View style={styles.profHistoryFlex}>
                 <Image
@@ -190,9 +209,9 @@ const Home = () => {
                 <Text style={styles.dataSuccess}>+Rp.50.000</Text>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </View> */}
+      {/* </ScrollView>
+      </SafeAreaView> */}
     </>
   );
 };

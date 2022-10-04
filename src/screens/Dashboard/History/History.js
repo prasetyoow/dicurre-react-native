@@ -5,18 +5,23 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const History = () => {
+  const navigation = useNavigation();
   return (
     <>
       <SafeAreaView>
         <ScrollView>
           {/* Top Navigation */}
           <View style={styles.topHistoryContainer}>
-            <Icon name="arrow-left" size={30} color="#4D4B57" />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-left" size={30} color="#4D4B57" />
+            </TouchableOpacity>
             <Text style={styles.textTop}>History</Text>
           </View>
 
