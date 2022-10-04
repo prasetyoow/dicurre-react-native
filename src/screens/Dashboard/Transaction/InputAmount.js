@@ -82,16 +82,12 @@ const InputAmount = ({navigation}) => {
   const name = useSelector(state => state.transactions.name);
   const phone = useSelector(state => state.transactions.phone);
   const profile = useSelector(state => state.profile.data);
-  // const image = useSelector(state => state.transactions.image);
-  // const receiver = useSelector(state => state.transactions.receiver);
+  const image = useSelector(state => state.transactions.image);
   const slicedMoney = profile.balance
     .slice('2')
     .replace('.', '')
     .replace('.', '');
-  console.log(slicedMoney);
   const onConfirm = val => {
-    console.log(val.amount + 'ini amount');
-    console.log(val.notes + 'ini notes');
     if (parseInt(val.amount, 10) < parseInt(slicedMoney, 10)) {
       dispatch(getamount(val.amount));
       dispatch(getnotes(val.notes));
@@ -109,7 +105,9 @@ const InputAmount = ({navigation}) => {
       {/* Top Navigation */}
       <View>
         <View style={styles.topTransferContainer}>
-          <Icon name="arrow-left" size={30} color="#4D4B57" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrow-left" size={30} color="#4D4B57" />
+          </TouchableOpacity>
           <Text style={styles.textTop}>Transfer</Text>
         </View>
 
@@ -119,12 +117,10 @@ const InputAmount = ({navigation}) => {
               <Image
                 style={styles.dataHistoryImage}
                 source={
-                  profile.picture === null
+                  image === null
                     ? require('../../../assets/images/defaultProfile.png')
                     : {
-                        uri:
-                          'http://192.168.1.10:8787/public/uploads/' +
-                          profile.picture,
+                        uri: 'http://192.168.1.10:8787/public/uploads/' + image,
                       }
                 }
               />

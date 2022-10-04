@@ -1,13 +1,17 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const PersonalInfo = () => {
+  const navigation = useNavigation();
   return (
     <>
       {/* Top Navigation */}
       <View style={styles.topPersonalContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Personal Information</Text>
       </View>
 

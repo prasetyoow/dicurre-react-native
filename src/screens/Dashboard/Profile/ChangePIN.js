@@ -26,7 +26,9 @@ const ChangePIN = () => {
     <>
       {/* Top Navigation */}
       <View style={styles.topPersonalContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Change PIN</Text>
       </View>
 

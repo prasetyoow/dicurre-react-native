@@ -5,12 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {getdate, resetmsg} from '../../../redux/reducers/transactions';
+import {
+  getdate,
+  getimage,
+  resetmsg,
+} from '../../../redux/reducers/transactions';
 
 const Confirmation = ({navigation}) => {
   const dispatch = useDispatch();
-  // const token = useSelector(state => state.auth.token);
   const name = useSelector(state => state.transactions.name);
+  const image = useSelector(state => state.transactions.image);
   const phone = useSelector(state => state.transactions.phone);
   const profile = useSelector(state => state.profile.data);
   const amount = useSelector(state => state.transactions.amount);
@@ -22,9 +26,10 @@ const Confirmation = ({navigation}) => {
     .slice('2')
     .replace('.', '')
     .replace('.', '');
-  console.log(slicedMoney);
+  console.log(slicedMoney + ' ini slicedMoney');
   const onSubmit = val => {
     dispatch(getdate(date));
+    dispatch(getimage(val.picture));
     navigation.navigate('EnterPIN');
   };
   React.useEffect(() => {
@@ -34,7 +39,9 @@ const Confirmation = ({navigation}) => {
     <>
       {/* Top Navigation */}
       <View style={styles.topTransferContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Confirmation</Text>
       </View>
 
@@ -45,7 +52,13 @@ const Confirmation = ({navigation}) => {
           <View style={styles.profHistoryFlex}>
             <Image
               style={styles.dataHistoryImage}
-              source={require('../../../assets/images/defaultProfile.png')}
+              source={
+                image === null
+                  ? require('../../../assets/images/defaultProfile.png')
+                  : {
+                      uri: 'http://192.168.1.10:8787/public/uploads/' + image,
+                    }
+              }
             />
             <View>
               <Text style={styles.dataNameHistory}>{name}</Text>

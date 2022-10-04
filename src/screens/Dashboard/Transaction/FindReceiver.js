@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 import {useNavigation} from '@react-navigation/native';
 import ListContact from '../../../components/ListContact';
 
@@ -25,8 +26,8 @@ const FindReceiver = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const profiles = useSelector(state => state.transactions?.results);
-  console.log(profiles);
-  // const totalData = useSelector(state => state.transactions?.totalData);
+  const totalData = useSelector(state => state.transactions?.totalData);
+  const pageInfo = useSelector(state => state.transactions?.pageInfo);
   const passData = item => {
     dispatch(getname(item.fullname));
     dispatch(getphone(item.phone_number));
@@ -39,11 +40,12 @@ const FindReceiver = () => {
   }, [dispatch]);
   return (
     <>
-      {/* <SafeAreaView> */}
-      {/* <ScrollView> */}
       {/* Top Navigation */}
+
       <View style={styles.topReceiverContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Find Receiver</Text>
       </View>
 
@@ -58,7 +60,7 @@ const FindReceiver = () => {
         ListHeaderComponent={
           <View style={styles.padding}>
             <Text style={styles.textMid}>All Contact</Text>
-            <Text style={styles.textMuted}>17 Contacts Found</Text>
+            <Text style={styles.textMuted}>{totalData} Contacts Found</Text>
           </View>
         }
         data={profiles}
@@ -72,8 +74,20 @@ const FindReceiver = () => {
         keyExtractor={item => String(item.id)}
         contentContainerStyle={styles.padding}
       />
-      {/* </ScrollView> */}
-      {/* </SafeAreaView> */}
+      {/* Button pagination */}
+      <View style={styles.paginFlex}>
+        <TouchableOpacity>
+          <View style={styles.dateContainer}>
+            <Text>Prev</Text>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.numPagin}>1</Text>
+        <TouchableOpacity onPress={() => pageInfo.nextPage}>
+          <View style={styles.dateContainer}>
+            <Text>Next</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -179,6 +193,23 @@ const styles = StyleSheet.create({
   },
   padding: {
     padding: 10,
+  },
+  paginFlex: {
+    margin: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  numPagin: {
+    marginTop: 5,
+    fontSize: 16,
+  },
+  dateContainer: {
+    backgroundColor: PRIMARY_COLOR,
+    width: 100,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

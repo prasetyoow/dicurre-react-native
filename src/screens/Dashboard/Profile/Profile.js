@@ -24,12 +24,14 @@ const Profile = ({navigation}) => {
   };
   React.useEffect(() => {
     dispatch(getUserLogin(token));
-  }, []);
+  }, [dispatch, token]);
   return (
     <>
       <ScrollView>
         <View style={styles.topTransferContainer}>
-          <Icon name="arrow-left" size={30} color="#4D4B57" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrow-left" size={30} color="#4D4B57" />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.profileFlex}>

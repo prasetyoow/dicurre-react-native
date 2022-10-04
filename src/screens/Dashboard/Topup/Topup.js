@@ -14,10 +14,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {useSelector, useDispatch} from 'react-redux';
 import {topUp} from '../../../redux/asyncActions/transactions';
 import {resetmsg} from '../../../redux/reducers/transactions';
+import {useNavigation} from '@react-navigation/native';
 // import {Formik} from 'formik';
 // import * as Yup from 'yup';
 
 const Topup = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [show, setShow] = React.useState(false);
   const [amount, setAmount] = React.useState('');
@@ -44,7 +46,9 @@ const Topup = () => {
       <SafeAreaView>
         <ScrollView>
           <View style={styles.topTransferContainer}>
-            <Icon name="arrow-left" size={30} color="#4D4B57" />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-left" size={30} color="#4D4B57" />
+            </TouchableOpacity>
             <Text style={styles.textTop}>Top Up</Text>
           </View>
 
@@ -68,13 +72,13 @@ const Topup = () => {
             visible={show}
             onRequestClose={() => setShow(!show)}
             style={stylesLocal.br}>
-            <View style={stylesLocal.modal}>
+            <View style={stylesLocal.modalBg}>
               <View style={stylesLocal.wrapModal}>
-                <Text style={stylesLocal.titleModal}>Input Amount Here</Text>
+                <Text style={stylesLocal.titleModal}>Top up</Text>
                 <TextInput
                   style={stylesLocal.input}
                   keyboardType="decimal-pad"
-                  placeholder="Min 20000"
+                  placeholder="Enter your nominal"
                   value={amount}
                   onChangeText={setAmount}
                 />
@@ -87,7 +91,7 @@ const Topup = () => {
                   <TouchableOpacity
                     style={stylesLocal.topUp}
                     onPress={() => submit()}>
-                    <Text style={stylesLocal.acount}>Top Up</Text>
+                    <Text style={stylesLocal.acount}>Confirm</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -116,7 +120,7 @@ const Topup = () => {
               <View style={styles.topUpTextFlex}>
                 <Text style={styles.numTopUp}>2</Text>
                 <Text style={styles.textTopUp}>
-                  Type your security number on the ATM or E-Banking.
+                  Type your security number on the {'\n'} ATM or E-Banking.
                 </Text>
               </View>
             </View>
@@ -359,10 +363,9 @@ const stylesLocal = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  modal: {
+  modalBg: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     flex: 1,
-    borderRadius: 15,
   },
   br: {
     borderRadius: 15,
@@ -395,7 +398,7 @@ const stylesLocal = StyleSheet.create({
   },
   cancel: {
     height: 30,
-    backgroundColor: 'green',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -406,11 +409,11 @@ const stylesLocal = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 19,
-    color: 'gray',
+    color: 'black',
   },
   topUp: {
     height: 30,
-    backgroundColor: '#6379F4',
+    backgroundColor: 'green',
     alignItems: 'center',
     justifyContent: 'center',
     width: 70,

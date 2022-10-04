@@ -1,4 +1,10 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
@@ -12,7 +18,9 @@ const ChangePassword = () => {
     <>
       {/* Top Navigation */}
       <View style={styles.topPersonalContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Change Password</Text>
       </View>
 
@@ -26,19 +34,19 @@ const ChangePassword = () => {
           placeholder="Current Password"
           icon="lock"
           secure={true}
-          type="email-address"
+          type="text"
         />
         <CustomInput
           placeholder="New Password"
           icon="lock"
           secure={true}
-          type="email-address"
+          type="text"
         />
         <CustomInput
           placeholder="Repeat Password"
           icon="lock"
           secure={true}
-          type="email-address"
+          type="text"
         />
       </View>
 

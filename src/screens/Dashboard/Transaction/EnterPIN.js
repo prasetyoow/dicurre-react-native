@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,11 +13,13 @@ const EnterPIN = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
   const successMsg = useSelector(state => state.transactions.successMsg);
+  const errorMsg = useSelector(state => state.transactions.errorMsg);
   const amount = useSelector(state => state.transactions.amount);
   const notes = useSelector(state => state.transactions.notes);
   const receiver_id = useSelector(state => state.transactions.receiver);
-  const time = useSelector(state => state.transactions.date);
-  const type_id = 18;
+  const time = useSelector(state => state.transactions.time);
+  console.log(time + ' ini time');
+  const type_id = 1;
   const pinView = useRef(null);
   const [showRemoveButton, setShowRemoveButton] = useState(false);
   const [enteredPin, setEnteredPin] = useState('');
@@ -39,13 +40,17 @@ const EnterPIN = ({navigation}) => {
     dispatch(resetmsg());
     if (successMsg) {
       navigation.navigate('TransferSuccess');
+    } else if (errorMsg) {
+      navigation.navigate('TransferFailed');
     }
-  }, [successMsg, navigation, dispatch]);
+  }, [successMsg, errorMsg, navigation, dispatch]);
   return (
     <>
       {/* Top Navigation */}
       <View style={styles.topTransferContainer}>
-        <Icon name="arrow-left" size={30} color="#4D4B57" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
         <Text style={styles.textTop}>Enter Your PIN</Text>
       </View>
 
@@ -69,7 +74,6 @@ const EnterPIN = ({navigation}) => {
           borderWidth: 1,
           borderColor: PRIMARY_COLOR,
         }}
-        // eslint-disable-next-line react-native/no-inline-styles
         buttonTextStyle={{
           color: PRIMARY_COLOR,
         }}
@@ -81,8 +85,8 @@ const EnterPIN = ({navigation}) => {
             setShowCompletedButton(!showCompletedButton);
             const request = {
               amount,
-              notes,
               receiver_id,
+              notes,
               time,
               type_id,
               pin: enteredPin,
