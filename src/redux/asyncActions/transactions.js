@@ -44,16 +44,34 @@ export const transfer = createAsyncThunk(
     const results = {};
     try {
       const send = qs.stringify(request);
-      console.log(data);
+      console.log(data + ' ini data');
+      console.log(send + ' ini log send');
       const {data} = await http(token).post('auth/transfer', send);
-      console.log(data);
+      console.log(data + ' ini data');
       results.data = data.results;
       results.message = data.message;
       return results;
     } catch (e) {
-      console.log(e.response.data.message);
+      console.log(e + ' apakah ini errornya gaes?');
       results.error = e.response.data.message;
       return results;
+    }
+  },
+);
+
+export const getHistoryTransaction = createAsyncThunk(
+  'auth/historyTransactions',
+  async token => {
+    const results = {};
+    try {
+      const {data} = await http(token).get('auth/historyTransactions');
+      results.data = data.results;
+      results.message = data.message;
+      results.pageInfo = data.pageInfo;
+      return results;
+    } catch (e) {
+      console.log(e);
+      return e;
     }
   },
 );
