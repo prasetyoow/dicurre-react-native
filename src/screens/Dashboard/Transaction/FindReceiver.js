@@ -20,14 +20,64 @@ import {
   getphone,
   getimage,
   getreceiver,
+  resetDataContact,
 } from '../../../redux/reducers/transactions';
 
 const FindReceiver = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const profiles = useSelector(state => state.transactions?.results);
-  const totalData = useSelector(state => state.transactions?.totalData);
+  const [sort, setSort] = React.useState('ASC');
+  const [search, setSearch] = React.useState('');
+  const [sortType, setSortType] = React.useState('fullname');
+  // const profiles = useSelector(state => state.transactions?.results);
+  const nextPage = useSelector(state => state.transactions?.nextPage);
   const pageInfo = useSelector(state => state.transactions?.pageInfo);
+
+  const onSearch = value => {
+    dispatch(resetDataContact());
+    setSearch(value);
+    if (value === '') {
+      dispatch(resetDataContact());
+    }
+  };
+
+  const onAsc = () => {
+    dispatch(resetDataContact());
+    setSort('ASC');
+  };
+
+  const onDesc = () => {
+    dispatch(resetDataContact());
+    setSort('DESC');
+  };
+
+  const onSortType = () => {
+    if (sortType === 'fullname') {
+      dispatch(resetDataContact());
+      setSortType('phone_number');
+    } else {
+      dispatch(resetDataContact());
+      setSortType('fullname');
+    }
+  };
+
+  let page = pageInfo?.currentPage;
+  const nextData = () => {
+    page++;
+    if (pageInfo?.nextPage !== null && page !== 1) {
+      dispatch(
+        getAllProfile({
+          page,
+          limit: 6,
+          sortType: sort,
+          orderBy: sortType,
+          search: search,
+        }),
+      );
+      console.log('next');
+      console.log(page++);
+    }
+  };
   const passData = item => {
     dispatch(getname(item.fullname));
     dispatch(getphone(item.phone_number));
@@ -36,8 +86,16 @@ const FindReceiver = () => {
     navigation.navigate('InputAmount');
   };
   React.useEffect(() => {
-    dispatch(getAllProfile());
-  }, [dispatch]);
+    dispatch(
+      getAllProfile({
+        limit: 6,
+        page: 1,
+        sortType: sort,
+        orderBy: sortType,
+        search: search,
+      }),
+    );
+  }, [dispatch, sort, sortType, search]);
   return (
     <>
       {/* Top Navigation */}
@@ -52,18 +110,63 @@ const FindReceiver = () => {
       {/* Input search receiver */}
       <View style={styles.formFlex}>
         <Icon style={styles.iconForm} name="search" size={20} color="#A9A9A9" />
-        <TextInput style={styles.textForm} placeholder="Search receiver here" />
+        <TextInput
+          style={styles.textForm}
+          onChangeText={onSearch}
+          value={search}
+          placeholder="Search receiver here"
+        />
       </View>
 
       {/* All Contact */}
       <FlatList
         ListHeaderComponent={
-          <View style={styles.padding}>
-            <Text style={styles.textMid}>All Contact</Text>
-            <Text style={styles.textMuted}>{totalData} Contacts Found</Text>
-          </View>
+          <>
+            <View style={styles.padding}>
+              <Text style={styles.textMid}>All Contact</Text>
+              <Text style={styles.textMuted}>
+                {pageInfo?.totalData} Contacts Found
+              </Text>
+            </View>
+            <View style={styles.filterFlex}>
+              <TouchableOpacity
+                onPress={() => onAsc()}
+                disabled={sort === 'ASC'}>
+                <View style={styles.ascContainer}>
+                  <Icon name="arrow-up" size={24} color="#FF5B37" />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onDesc()}
+                disabled={sort === 'DESC'}>
+                <View style={styles.descContainer}>
+                  <Icon name="arrow-down" size={24} color="#1EC15F" />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onSortType}>
+                <View style={styles.dateContainer}>
+                  <Text style={styles.textDate}>
+                    Filter by {sortType === 'fullname' ? 'Name' : 'Phone'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            {/* <View style={styles.paginFlex}>
+              <TouchableOpacity>
+                <View style={styles.buttonPaginContainer}>
+                  <Text>Prev</Text>
+                </View>
+              </TouchableOpacity>
+              <Text style={styles.numPagin}>1</Text>
+              <TouchableOpacity>
+                <View style={styles.buttonPaginContainer}>
+                  <Text>Next</Text>
+                </View>
+              </TouchableOpacity>
+            </View> */}
+          </>
         }
-        data={profiles}
+        data={nextPage}
         renderItem={({item}) => {
           return (
             <TouchableOpacity onPress={() => passData(item)}>
@@ -71,23 +174,11 @@ const FindReceiver = () => {
             </TouchableOpacity>
           );
         }}
+        onEndReached={nextData}
+        onEndReachedThreshold={0.5}
         keyExtractor={item => String(item.id)}
         contentContainerStyle={styles.padding}
       />
-      {/* Button pagination */}
-      <View style={styles.paginFlex}>
-        <TouchableOpacity>
-          <View style={styles.dateContainer}>
-            <Text>Prev</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.numPagin}>1</Text>
-        <TouchableOpacity onPress={() => pageInfo.nextPage}>
-          <View style={styles.dateContainer}>
-            <Text>Next</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
     </>
   );
 };
@@ -192,7 +283,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   padding: {
-    padding: 10,
+    paddingHorizontal: 10,
   },
   paginFlex: {
     margin: 15,
@@ -203,13 +294,45 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 16,
   },
-  dateContainer: {
+  buttonPaginContainer: {
     backgroundColor: PRIMARY_COLOR,
     width: 100,
     height: 40,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  filterFlex: {
+    padding: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ascContainer: {
+    backgroundColor: 'white',
+    width: 57,
+    height: 57,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  descContainer: {
+    backgroundColor: 'white',
+    width: 57,
+    height: 57,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dateContainer: {
+    backgroundColor: 'white',
+    width: 189,
+    height: 57,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textDate: {
+    color: '#6379F4',
   },
 });
 
