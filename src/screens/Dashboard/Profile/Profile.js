@@ -6,6 +6,9 @@ import {
   Switch,
   TouchableOpacity,
   ScrollView,
+  TextInput,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,8 +17,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../../redux/reducers/auth';
 import {getUserLogin} from '../../../redux/asyncActions/profile';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 
 const Profile = ({navigation}) => {
+  const [show, setShow] = React.useState(false);
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.data);
   const token = useSelector(state => state.auth.token);
@@ -47,10 +52,66 @@ const Profile = ({navigation}) => {
                   }
             }
           />
-          <View style={styles.profEditFlex}>
-            <Icon name="pencil" size={16} color="#7A7886" />
-            <Text style={styles.editProf}>Edit</Text>
-          </View>
+          <TouchableOpacity onPress={() => setShow(!show)}>
+            <View style={styles.profEditFlex}>
+              <Icon name="pencil" size={16} color="#7A7886" />
+              <Text style={styles.editProf}>Edit</Text>
+            </View>
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={show}
+              onRequestClose={() => setShow(!show)}
+              style={stylesLocal.br}>
+              <View style={stylesLocal.modalBg}>
+                <View style={stylesLocal.wrapModal}>
+                  <Text style={stylesLocal.titleModal}>Edit Profile</Text>
+                  <Image
+                    style={stylesLocal.profileImageModal}
+                    source={
+                      profile.picture === null
+                        ? require('../../../assets/images/defaultProfile.png')
+                        : {
+                            uri:
+                              'http://192.168.1.10:8888/public/uploads/' +
+                              profile.picture,
+                          }
+                    }
+                  />
+                  <View style={stylesLocal.modalPictFlex}>
+                    <TouchableOpacity>
+                      <View style={stylesLocal.pictContainer}>
+                        <Text style={stylesLocal.textPict}>Camera</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <View style={stylesLocal.pictContainer}>
+                        <Text style={stylesLocal.textPict}>Gallery</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <TextInput
+                    style={stylesLocal.input}
+                    keyboardType="email-address"
+                    placeholder="Enter your new fullname"
+                    // value={amount}
+                    // onChangeText={setAmount}
+                  />
+                  <View style={stylesLocal.buttonModalFlex}>
+                    <TouchableOpacity
+                      style={stylesLocal.cancel}
+                      onPress={() => setShow(!show)}>
+                      <Text style={stylesLocal.acount}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={stylesLocal.confirmModal}>
+                      <Text style={stylesLocal.acount}>Confirm</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </TouchableOpacity>
           <Text style={styles.profName}>
             {profile.fullname === null ? '-' : profile.fullname}
           </Text>
@@ -168,6 +229,90 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#4D4B57',
+  },
+});
+
+const stylesLocal = StyleSheet.create({
+  modalBg: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+  },
+  wrapModal: {
+    borderRadius: 12,
+    backgroundColor: 'white',
+    height: Dimensions.get('screen').height / 2.3,
+    marginVertical: 50,
+    marginHorizontal: 25,
+    elevation: 4,
+    alignItems: 'center',
+  },
+  titleModal: {
+    marginBottom: 30,
+    marginTop: 15,
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 27,
+    color: 'gray',
+  },
+  profileImageModal: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+  modalPictFlex: {
+    flexDirection: 'row',
+    margin: 15,
+    justifyContent: 'space-between',
+  },
+  pictContainer: {
+    marginHorizontal: 10,
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+    height: 45,
+    width: 70,
+    borderWidth: 1,
+  },
+  textPict: {
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  input: {
+    height: 50,
+    marginHorizontal: 20,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    fontSize: 18,
+    color: 'gray',
+  },
+  buttonModalFlex: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginVertical: 30,
+  },
+  cancel: {
+    height: 35,
+    borderRadius: 12,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    width: 70,
+  },
+  acount: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 19,
+    color: 'black',
+  },
+  confirmModal: {
+    height: 35,
+    borderRadius: 12,
+    backgroundColor: PRIMARY_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    width: 70,
   },
 });
 export default Profile;

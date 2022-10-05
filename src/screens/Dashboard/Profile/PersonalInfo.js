@@ -3,8 +3,19 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
+// redux
+import {getUserLogin} from '../../../redux/asyncActions/profile';
+import {useDispatch, useSelector} from 'react-redux';
+
 const PersonalInfo = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile.data);
+  const token = useSelector(state => state.auth.token);
+
+  React.useEffect(() => {
+    dispatch(getUserLogin(token));
+  }, [dispatch, token]);
   return (
     <>
       {/* Top Navigation */}
@@ -21,13 +32,8 @@ const PersonalInfo = () => {
       </Text>
 
       <View style={styles.dataHistoryContainer}>
-        <Text style={styles.textMutedTransfer}>First Name</Text>
-        <Text style={styles.textAmountTransfer}>Robert</Text>
-      </View>
-
-      <View style={styles.dataHistoryContainer}>
-        <Text style={styles.textMutedTransfer}>Last Name</Text>
-        <Text style={styles.textAmountTransfer}>Chandler</Text>
+        <Text style={styles.textMutedTransfer}>Full name</Text>
+        <Text style={styles.textAmountTransfer}>{profile.fullname}</Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
@@ -38,7 +44,7 @@ const PersonalInfo = () => {
       <View style={styles.dataHistoryContainer}>
         <View>
           <Text style={styles.textMutedTransfer}>Phone Number</Text>
-          <Text style={styles.textAmountTransfer}>+62 813-9387-7946</Text>
+          <Text style={styles.textAmountTransfer}>{profile.phone_number}</Text>
         </View>
       </View>
     </>
