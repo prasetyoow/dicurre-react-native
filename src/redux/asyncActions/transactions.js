@@ -2,13 +2,15 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import http from '../../helpers/http';
 import qs from 'qs';
 
-export const getAllProfile = createAsyncThunk('profile', async () => {
+export const getAllProfile = createAsyncThunk('profile', async param => {
   const results = {};
   try {
-    const {data} = await http().get('profile');
+    const {data} = await http().get(
+      `profile?search=${param.search}&orderBy=${param.orderBy}&sortType=${param.sortType}&limit=${param.limit}&page=${param.page}`,
+    );
     console.log(data);
     results.data = data.results;
-    results.page = data.pageInfo;
+    results.pageInfo = data.pageInfo;
     results.message = data.message;
     return results;
   } catch (e) {
@@ -67,7 +69,6 @@ export const getHistoryTransaction = createAsyncThunk(
       const {data} = await http(token).get('auth/historyTransactions');
       results.data = data.results;
       results.message = data.message;
-      results.pageInfo = data.pageInfo;
       return results;
     } catch (e) {
       console.log(e);

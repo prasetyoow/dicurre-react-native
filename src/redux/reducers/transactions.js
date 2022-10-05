@@ -17,6 +17,9 @@ const initialState = {
   errorMsg: '',
   successMsg: '',
   getAllProfile: [],
+  resultsHistory: {},
+  pageInfo: {},
+  nextPage: [],
 };
 
 const transactions = createSlice({
@@ -48,6 +51,9 @@ const transactions = createSlice({
       state.successMsg = null;
       state.errorMsg = null;
     },
+    resetDataContact: state => {
+      state.nextPage = [];
+    },
   },
   extraReducers: build => {
     build.addCase(topUp.pending, state => {
@@ -71,15 +77,15 @@ const transactions = createSlice({
     });
     build.addCase(getAllProfile.fulfilled, (state, action) => {
       state.results = action.payload?.data;
-      state.totalData = action.payload?.page.totalData;
-      state.pageInfo = action.payload?.page;
+      state.pageInfo = action.payload.pageInfo;
+      state.nextPage.push(...action.payload.data);
     });
     build.addCase(getHistoryTransaction.pending, state => {
       state.errorMsg = null;
       state.successMsg = null;
     });
     build.addCase(getHistoryTransaction.fulfilled, (state, action) => {
-      state.results = action.payload?.data;
+      state.resultsHistory = action.payload?.data;
       state.pageInfo = action.payload?.pageInfo;
     });
   },
@@ -96,4 +102,5 @@ export const {
   getnotes,
   getdate,
   resetmsg,
+  resetDataContact,
 } = transactions.actions;
