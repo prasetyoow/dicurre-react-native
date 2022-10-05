@@ -21,7 +21,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.data);
   const token = useSelector(state => state.auth.token);
-  const data = useSelector(state => state.transactions.results);
+  const data = useSelector(state => state.transactions.resultsHistory);
 
   React.useEffect(() => {
     dispatch(getUserLogin(token));
@@ -29,8 +29,6 @@ const Home = () => {
   }, [dispatch, token]);
   return (
     <>
-      {/* <SafeAreaView>
-        <ScrollView> */}
       {/* Profile */}
       <View style={styles.profileSection}>
         <View style={styles.profileFlex}>
@@ -121,97 +119,6 @@ const Home = () => {
         keyExtractor={item => String(item.id)}
         contentContainerStyle={styles.padding}
       />
-      {/* <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/suhi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/spotify.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Spotify</Text>
-                  <Text style={styles.textMutedHistory}>Subscription</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataDanger}>-Rp.49.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/netflix.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Netflix</Text>
-                  <Text style={styles.textMutedHistory}>Subscription</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataDanger}>-Rp.149.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/bobi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.1.150.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../assets/images/suhi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
-              </View>
-            </View>
-          </View> */}
-      {/* </ScrollView>
-      </SafeAreaView> */}
     </>
   );
 };
