@@ -1,140 +1,58 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import ListHistory from '../../../components/ListHistory';
+
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {getHistoryTransaction} from '../../../redux/asyncActions/transactions';
 
 const History = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.token);
+  const data = useSelector(state => state.transactions.resultsHistory);
+
+  React.useEffect(() => {
+    dispatch(getHistoryTransaction(token));
+  }, [dispatch, token]);
   return (
     <>
-      <SafeAreaView>
-        <ScrollView>
-          {/* Top Navigation */}
-          <View style={styles.topHistoryContainer}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Icon name="arrow-left" size={30} color="#4D4B57" />
+      {/* Top Navigation */}
+      <View style={styles.topHistoryContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={30} color="#4D4B57" />
+        </TouchableOpacity>
+        <Text style={styles.textTop}>History</Text>
+      </View>
+
+      {/* Filter Asc/Desc & Date */}
+      <View style={styles.filterFlex}>
+        <View style={styles.ascContainer}>
+          <Icon name="arrow-up" size={24} color="#FF5B37" />
+        </View>
+        <View style={styles.descContainer}>
+          <Icon name="arrow-down" size={24} color="#1EC15F" />
+        </View>
+        <View style={styles.dateContainer}>
+          <Text style={styles.textDate}>Filter by Date</Text>
+        </View>
+      </View>
+
+      <FlatList
+        data={data}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TransferSuccess')}>
+              <ListHistory item={item} />
             </TouchableOpacity>
-            <Text style={styles.textTop}>History</Text>
-          </View>
-
-          {/* Filter Week */}
-          <Text style={styles.textMuted}>This Week</Text>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/suhi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Samuel Suhi</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/spotify.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Spotify</Text>
-                  <Text style={styles.textMutedHistory}>Subscription</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataDanger}>-Rp.49.000</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Filter Month */}
-          <Text style={styles.textMuted}>This Month</Text>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/netflix.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Netflix</Text>
-                  <Text style={styles.textMutedHistory}>Subscription</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataDanger}>-Rp.149.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/bobi.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Bobi Sammy</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.1.150.000</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.dataHistoryContainer}>
-            <View style={styles.dataHistoryFlex}>
-              <View style={styles.profHistoryFlex}>
-                <Image
-                  style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/momo.png')}
-                />
-                <View style={styles.textHistoryFlex}>
-                  <Text style={styles.dataNameHistory}>Momo Taro</Text>
-                  <Text style={styles.textMutedHistory}>Transfer</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.dataSuccess}>+Rp.50.000</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Filter Asc/Desc & Date */}
-          <View style={styles.filterFlex}>
-            <View style={styles.ascContainer}>
-              <Icon name="arrow-up" size={24} color="#FF5B37" />
-            </View>
-            <View style={styles.descContainer}>
-              <Icon name="arrow-down" size={24} color="#1EC15F" />
-            </View>
-            <View style={styles.dateContainer}>
-              <Text style={styles.textDate}>Filter by Date</Text>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          );
+        }}
+        keyExtractor={item => String(item.id)}
+        contentContainerStyle={styles.padding}
+      />
     </>
   );
 };
