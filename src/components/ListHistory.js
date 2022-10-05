@@ -18,7 +18,7 @@ const ListHistory = ({item}) => {
                   }
             }
           />
-          <View style={styles.textHistoryFlex}>
+          <View>
             <Text style={styles.dataNameHistory}>{item.penerima_fullname}</Text>
             <Text style={styles.textMutedHistory}>{item.tipe_transaksi}</Text>
           </View>
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: 'white',
     marginBottom: 20,
+    borderRadius: 12,
   },
   dataHistoryFlex: {
     flexDirection: 'row',

@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: 'white',
     marginBottom: 20,
+    borderRadius: 12,
   },
   dataHistoryFlex: {
     flexDirection: 'row',
