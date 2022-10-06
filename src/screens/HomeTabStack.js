@@ -8,9 +8,6 @@ import TopUp from './Dashboard/Topup/Topup';
 import FindReceiver from './Dashboard/Transaction/FindReceiver';
 import History from './Dashboard/History/History';
 import Profile from './Dashboard/Profile/Profile';
-// import TransactionStack from './TransactionStack';
-// import ProfileStack from './ProfileStack';
-// import HistoryStack from './HistoryStack';
 
 const BottomTab = createBottomTabNavigator();
 
