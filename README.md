@@ -5,6 +5,14 @@
 
  A mobile application for transfering money to anyone you connected. The application is made using React Native as a framework for mobile platform (Android and IOS) and CSS for the styling
 
+ ## **Screenshoot**
+
+![Login](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/login.png)
+![Dashboard](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/dashboard.png)
+![Transfer](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/transfer.png)
+![Topup](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/topup.png)
+![Profile](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/profile.png)
+
 ## **Features**
 
  * Login
