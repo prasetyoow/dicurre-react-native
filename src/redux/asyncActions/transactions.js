@@ -19,6 +19,25 @@ export const getAllProfile = createAsyncThunk('profile', async param => {
   }
 });
 
+export const getHistoryTransaction = createAsyncThunk(
+  'auth/historyTransactions',
+  async ({token, param}) => {
+    const results = {};
+    try {
+      const {data} = await http(token).get(
+        `auth/historyTransactions?sortType=${param.sortType}&limit=${param.limit}&page=${param.page}`,
+      );
+      results.data = data.results;
+      results.pageInfoHistory = data.pageInfo;
+      results.message = data.message;
+      return results;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  },
+);
+
 export const topUp = createAsyncThunk(
   'auth/topup',
   async ({token, request}) => {
@@ -57,22 +76,6 @@ export const transfer = createAsyncThunk(
       console.log(e + ' apakah ini errornya gaes?');
       results.error = e.response.data.message;
       return results;
-    }
-  },
-);
-
-export const getHistoryTransaction = createAsyncThunk(
-  'auth/historyTransactions',
-  async token => {
-    const results = {};
-    try {
-      const {data} = await http(token).get('auth/historyTransactions');
-      results.data = data.results;
-      results.message = data.message;
-      return results;
-    } catch (e) {
-      console.log(e);
-      return e;
     }
   },
 );
