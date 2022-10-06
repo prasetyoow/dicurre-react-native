@@ -7,11 +7,16 @@
 
  ## **Screenshoot**
 
-![Login](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/login.png)
-![Dashboard](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/dashboard.png)
-![Transfer](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/transfer.png)
-![Topup](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/topup.png)
-![Profile](https://github.com/prasetyoow/dicurre-react-native/blob/master/screenshoot/profile.png)
+<style>
+  img {
+    width: 100px
+  }
+</style>
+<img src="./screenshoot/login.png">
+<img src="./screenshoot/dashboard.png">
+<img src="./screenshoot/topup.png">
+<img src="./screenshoot/transfer.png">
+<img src="./screenshoot/profile.png">
 
 ## **Features**
 
