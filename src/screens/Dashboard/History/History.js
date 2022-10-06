@@ -7,16 +7,48 @@ import ListHistory from '../../../components/ListHistory';
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {getHistoryTransaction} from '../../../redux/asyncActions/transactions';
+import {resetDataHistory} from '../../../redux/reducers/transactions';
 
 const History = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
-  const data = useSelector(state => state.transactions.resultsHistory);
+  const nextPage = useSelector(state => state.transactions?.nextPageHistory);
+  const pageInfo = useSelector(state => state.transactions?.pageInfoHistory);
+
+  const [sort, setSort] = React.useState('DESC');
+
+  const onAsc = () => {
+    dispatch(resetDataHistory());
+    setSort('ASC');
+  };
+
+  const onDesc = () => {
+    dispatch(resetDataHistory());
+    setSort('DESC');
+  };
+
+  let page = pageInfo?.currentPage;
+  const nextData = () => {
+    page++;
+    if (pageInfo?.nextPage !== null && page !== 1) {
+      dispatch(
+        getHistoryTransaction({token, param: {page, limit: 6, sortType: sort}}),
+      );
+      console.log('next');
+      console.log(page++);
+    }
+  };
 
   React.useEffect(() => {
-    dispatch(getHistoryTransaction(token));
-  }, [dispatch, token]);
+    dispatch(
+      getHistoryTransaction({
+        token,
+        param: {limit: 6, page: 1, sortType: sort},
+      }),
+    );
+    dispatch(resetDataHistory());
+  }, [dispatch, token, sort]);
   return (
     <>
       {/* Top Navigation */}
@@ -27,21 +59,30 @@ const History = () => {
         <Text style={styles.textTop}>History</Text>
       </View>
 
+      <Text style={styles.textMuted}>
+        {pageInfo?.totalData} Data History Found
+      </Text>
+
       {/* Filter Asc/Desc & Date */}
       <View style={styles.filterFlex}>
-        <View style={styles.ascContainer}>
-          <Icon name="arrow-up" size={24} color="#FF5B37" />
-        </View>
-        <View style={styles.descContainer}>
-          <Icon name="arrow-down" size={24} color="#1EC15F" />
-        </View>
+        <TouchableOpacity onPress={() => onAsc()} disabled={sort === 'ASC'}>
+          <View style={styles.ascContainer}>
+            <Icon name="arrow-up" size={24} color="#FF5B37" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onDesc()} disabled={sort === 'DESC'}>
+          <View style={styles.descContainer}>
+            <Icon name="arrow-down" size={24} color="#1EC15F" />
+          </View>
+        </TouchableOpacity>
+
         <View style={styles.dateContainer}>
           <Text style={styles.textDate}>Filter by Date</Text>
         </View>
       </View>
 
       <FlatList
-        data={data}
+        data={nextPage}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
@@ -50,6 +91,8 @@ const History = () => {
             </TouchableOpacity>
           );
         }}
+        onEndReached={nextData}
+        onEndReachedThreshold={0.5}
         keyExtractor={item => String(item.id)}
         contentContainerStyle={styles.padding}
       />
@@ -58,6 +101,9 @@ const History = () => {
 };
 
 const styles = StyleSheet.create({
+  padding: {
+    paddingHorizontal: 10,
+  },
   topHistoryContainer: {
     flexDirection: 'row',
     marginTop: 30,

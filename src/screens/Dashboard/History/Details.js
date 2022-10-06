@@ -19,11 +19,18 @@ const Details = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
-  const data = useSelector(state => state.transactions.results);
+  const data = useSelector(state => state.transactions.resultsHistory);
+
+  const [sort, setSort] = React.useState('DESC');
 
   React.useEffect(() => {
-    dispatch(getHistoryTransaction(token));
-  }, [dispatch, token]);
+    dispatch(
+      getHistoryTransaction({
+        token,
+        param: {limit: 5, page: 1, sortType: sort},
+      }),
+    );
+  }, [dispatch, token, sort]);
   return (
     <>
       {/* Top Navigation */}
@@ -33,33 +40,6 @@ const Details = () => {
         </TouchableOpacity>
         <Text style={styles.textTop}>Transaction</Text>
       </View>
-      {/* Top Mid Content */}
-      {/* <View style={styles.topMidContainer}>
-        <View style={styles.expenseFlex}>
-          <Icon name="arrow-down" size={28} color="#1EC15F" />
-          <Text style={styles.textMuted}>Income</Text>
-          <Text style={styles.textWhite}>Rp. 2.120.000</Text>
-        </View>
-        <View style={styles.expenseFlex}>
-          <Icon name="arrow-down" size={28} color="#FF5B37" />
-          <Text style={styles.textMuted}>Expense</Text>
-          <Text style={styles.textWhite}>Rp. 1.560.000</Text>
-        </View>
-      </View>
-      <View /> */}
-
-      {/* Graphic */}
-      {/* <Text style={styles.textWeek}>In This Week</Text>
-      <Image
-        style={styles.graphImage}
-        source={require('../../../assets/images/graphic.png')}
-      /> */}
-
-      {/* Transaction History */}
-      {/* <View style={styles.historyFlex}>
-        <Text style={styles.historyTransText}>Transaction History</Text>
-        <Text style={styles.historyLink}>See all</Text>
-      </View> */}
 
       {/* Mapping history transactions */}
       <FlatList
@@ -88,7 +68,9 @@ const Details = () => {
             {/* Transaction History */}
             <View style={styles.historyFlex}>
               <Text style={styles.historyTransText}>Transaction History</Text>
-              <Text style={styles.historyLink}>See all</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('History')}>
+                <Text style={styles.historyLink}>See all</Text>
+              </TouchableOpacity>
             </View>
           </>
         }

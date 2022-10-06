@@ -15,6 +15,7 @@ import ListHistory from '../../components/ListHistory';
 import {getUserLogin} from '../../redux/asyncActions/profile';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHistoryTransaction} from '../../redux/asyncActions/transactions';
+import {PRIMARY_COLOR} from '../../assets/styles/coloring';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -23,10 +24,17 @@ const Home = () => {
   const token = useSelector(state => state.auth.token);
   const data = useSelector(state => state.transactions.resultsHistory);
 
+  const [sort, setSort] = React.useState('DESC');
+
   React.useEffect(() => {
     dispatch(getUserLogin(token));
-    dispatch(getHistoryTransaction(token));
-  }, [dispatch, token]);
+    dispatch(
+      getHistoryTransaction({
+        token,
+        param: {limit: 5, page: 1, sortType: sort},
+      }),
+    );
+  }, [dispatch, token, sort]);
   return (
     <>
       {/* Profile */}
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
   },
   containerBalance: {
     width: 380,
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     borderRadius: 20,
     padding: 15,
     margin: 15,
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textBalanceTop: {
-    color: '#D0D0D0',
+    color: 'white',
     fontSize: 14,
     fontWeight: '400',
     paddingBottom: 10,
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   textBalanceBot: {
-    color: '#D0D0D0',
+    color: 'white',
     fontSize: 14,
     fontWeight: '400',
     paddingBottom: 10,
