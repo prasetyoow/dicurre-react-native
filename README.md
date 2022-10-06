@@ -6,7 +6,7 @@
  A mobile application for transfering money to anyone you connected. The application is made using React Native as a framework for mobile platform (Android and IOS) and CSS for the styling
 
  ## **Screenshoot**
-
+<hmtl>
 <style>
   img {
     width: 100px
@@ -17,6 +17,7 @@
 <img src="./screenshoot/topup.png">
 <img src="./screenshoot/transfer.png">
 <img src="./screenshoot/profile.png">
+</html>
 
 ## **Features**
 
