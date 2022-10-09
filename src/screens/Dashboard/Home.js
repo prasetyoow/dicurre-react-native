@@ -44,12 +44,10 @@ const Home = () => {
             <Image
               style={styles.profileImage}
               source={
-                profile.picture === null
+                profile?.picture === null
                   ? require('../../assets/images/defaultProfile.png')
                   : {
-                      uri:
-                        'http://192.168.1.10:8787/public/uploads/' +
-                        profile.picture,
+                      uri: profile?.picture,
                     }
               }
             />
@@ -57,7 +55,7 @@ const Home = () => {
           <View style={styles.profileName}>
             <Text>Hello,</Text>
             <Text style={styles.userName}>
-              {profile.fullname === null ? '-' : profile.fullname}
+              {profile?.fullname === null ? '-' : profile?.fullname}
             </Text>
           </View>
         </View>
@@ -71,10 +69,10 @@ const Home = () => {
         <View style={styles.containerContentBalance}>
           <Text style={styles.textBalanceTop}>Balance</Text>
           <Text style={styles.textBalanceMid}>
-            {profile.balance === null ? '-' : profile.balance}
+            {profile?.balance === null ? '-' : profile?.balance}
           </Text>
           <Text style={styles.textBalanceBot}>
-            {profile.phone_number === null ? '-' : profile.phone_number}
+            {profile?.phone_number === null ? '-' : profile?.phone_number}
           </Text>
         </View>
       </View>
@@ -85,7 +83,7 @@ const Home = () => {
           <View style={styles.containerTopUp}>
             <View style={styles.contentTopup}>
               <View style={styles.transferFlex}>
-                <Icon name="arrow-up" size={24} color="#608DE2" />
+                <Icon name="arrow-up" size={24} color={PRIMARY_COLOR} />
                 <Text style={styles.textTransfer}>Transfer</Text>
               </View>
             </View>
@@ -96,7 +94,7 @@ const Home = () => {
           <View style={styles.containerTopUp}>
             <View style={styles.contentTopup}>
               <View style={styles.transferFlex}>
-                <Icon name="plus" size={24} color="#608DE2" />
+                <Icon name="plus" size={24} color={PRIMARY_COLOR} />
                 <Text style={styles.textTransfer}>Top Up</Text>
               </View>
             </View>
