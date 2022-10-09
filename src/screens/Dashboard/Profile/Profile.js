@@ -12,24 +12,38 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import qs from 'qs';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../../redux/reducers/auth';
-import {getUserLogin} from '../../../redux/asyncActions/profile';
-import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
+import {getUserLogin, editProfile} from '../../../redux/asyncActions/profile';
+import {resetMsg} from '../../../redux/reducers/profile';
 
 const Profile = ({navigation}) => {
   const [show, setShow] = React.useState(false);
+  const [fullname, setFullname] = React.useState('');
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.data);
+  console.log(profile?.picture);
+  const successMsg = useSelector(state => state.profile.successMsg);
   const token = useSelector(state => state.auth.token);
   const signOut = () => {
     dispatch(logout());
   };
+  const onChangeProfile = () => {
+    dispatch(resetMsg);
+    const request = {token: token, fullname: fullname};
+    console.log(qs.stringify(request) + ' dari page');
+    dispatch(editProfile(request));
+  };
   React.useEffect(() => {
     dispatch(getUserLogin(token));
-  }, [dispatch, token]);
+    dispatch(resetMsg);
+    if (successMsg !== null) {
+      setShow(false);
+    }
+  }, [dispatch, token, successMsg]);
   return (
     <>
       <ScrollView>
@@ -40,84 +54,71 @@ const Profile = ({navigation}) => {
         </View>
 
         <View style={styles.profileFlex}>
-          <Image
-            style={styles.profileImage}
-            source={
-              profile.picture === null
-                ? require('../../../assets/images/defaultProfile.png')
-                : {
-                    uri:
-                      'http://192.168.1.10:8888/public/uploads/' +
-                      profile.picture,
-                  }
-            }
-          />
-          <TouchableOpacity onPress={() => setShow(!show)}>
+          <TouchableOpacity onPress={() => navigation.navigate('EditPicture')}>
+            <Image
+              style={styles.profileImage}
+              source={
+                profile?.picture === null
+                  ? require('../../../assets/images/defaultProfile.png')
+                  : {
+                      uri: profile?.picture,
+                    }
+              }
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
             <View style={styles.profEditFlex}>
               <Icon name="pencil" size={16} color="#7A7886" />
               <Text style={styles.editProf}>Edit</Text>
             </View>
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={show}
-              onRequestClose={() => setShow(!show)}
-              style={stylesLocal.br}>
-              <View style={stylesLocal.modalBg}>
-                <View style={stylesLocal.wrapModal}>
-                  <Text style={stylesLocal.titleModal}>Edit Profile</Text>
-                  <Image
-                    style={stylesLocal.profileImageModal}
-                    source={
-                      profile.picture === null
-                        ? require('../../../assets/images/defaultProfile.png')
-                        : {
-                            uri:
-                              'http://192.168.1.10:8888/public/uploads/' +
-                              profile.picture,
-                          }
-                    }
-                  />
-                  <View style={stylesLocal.modalPictFlex}>
-                    <TouchableOpacity>
-                      <View style={stylesLocal.pictContainer}>
-                        <Text style={stylesLocal.textPict}>Camera</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <View style={stylesLocal.pictContainer}>
-                        <Text style={stylesLocal.textPict}>Gallery</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(resetMsg);
+              setShow(!show);
+            }}>
+            <Text style={styles.profName}>
+              {profile?.fullname === null ? '-' : profile?.fullname}
+            </Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={show}
+            onRequestClose={() => setShow(!show)}
+            style={stylesLocal.br}>
+            <View style={stylesLocal.modalBg}>
+              <View style={stylesLocal.wrapModal}>
+                <Text style={stylesLocal.titleModal}>Edit Profile</Text>
 
-                  <TextInput
-                    style={stylesLocal.input}
-                    keyboardType="email-address"
-                    placeholder="Enter your new fullname"
-                    // value={amount}
-                    // onChangeText={setAmount}
-                  />
-                  <View style={stylesLocal.buttonModalFlex}>
-                    <TouchableOpacity
-                      style={stylesLocal.cancel}
-                      onPress={() => setShow(!show)}>
-                      <Text style={stylesLocal.acount}>Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={stylesLocal.confirmModal}>
-                      <Text style={stylesLocal.acount}>Confirm</Text>
-                    </TouchableOpacity>
-                  </View>
+                <TextInput
+                  style={stylesLocal.input}
+                  keyboardType="email-address"
+                  placeholder="Enter your new fullname"
+                  value={fullname}
+                  onChangeText={setFullname}
+                />
+                <View style={stylesLocal.buttonModalFlex}>
+                  <TouchableOpacity
+                    style={stylesLocal.cancel}
+                    onPress={() => setShow(!show)}>
+                    <Text style={stylesLocal.acount}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={stylesLocal.confirmModal}
+                    onPress={onChangeProfile}>
+                    <Text style={stylesLocal.acount}>Confirm</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </Modal>
+            </View>
+          </Modal>
+          <TouchableOpacity>
+            <Text style={styles.profNum}>
+              {profile?.phone_number === null ? '-' : profile?.phone_number}
+            </Text>
           </TouchableOpacity>
-          <Text style={styles.profName}>
-            {profile.fullname === null ? '-' : profile.fullname}
-          </Text>
-          <Text style={styles.profNum}>
-            {profile.phone_number === null ? '-' : profile.phone_number}
-          </Text>
         </View>
 
         <View style={styles.profCardFlex}>
@@ -245,10 +246,11 @@ const stylesLocal = StyleSheet.create({
     marginHorizontal: 25,
     elevation: 4,
     alignItems: 'center',
+    textAlign: 'center',
   },
   titleModal: {
-    marginBottom: 30,
-    marginTop: 15,
+    marginBottom: 15,
+    marginTop: 105,
     fontSize: 22,
     fontWeight: '700',
     lineHeight: 27,
@@ -282,7 +284,7 @@ const stylesLocal = StyleSheet.create({
     marginHorizontal: 20,
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
-    fontSize: 18,
+    fontSize: 14,
     color: 'gray',
   },
   buttonModalFlex: {
@@ -308,7 +310,7 @@ const stylesLocal = StyleSheet.create({
   confirmModal: {
     height: 35,
     borderRadius: 12,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: 'green',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
