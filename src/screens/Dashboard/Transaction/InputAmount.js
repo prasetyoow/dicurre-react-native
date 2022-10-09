@@ -20,6 +20,7 @@ import * as Yup from 'yup';
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {TextInput} from 'react-native-gesture-handler';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 
 const amountSchema = Yup.object().shape({
   amount: Yup.number()
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   containerButton: {
-    backgroundColor: '#6379F4',
+    backgroundColor: PRIMARY_COLOR,
     width: '90%',
     padding: 20,
     marginLeft: 20,

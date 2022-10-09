@@ -8,6 +8,7 @@ import ListHistory from '../../../components/ListHistory';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHistoryTransaction} from '../../../redux/asyncActions/transactions';
 import {resetDataHistory} from '../../../redux/reducers/transactions';
+import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 
 const History = () => {
   const navigation = useNavigation();
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textDate: {
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
 });
 export default History;

@@ -33,18 +33,25 @@ const PersonalInfo = () => {
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Full name</Text>
-        <Text style={styles.textAmountTransfer}>{profile.fullname}</Text>
+        <Text style={styles.textAmountTransfer}>
+          {profile.fullname === null ? '-' : profile.fullname}
+        </Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Verified E-mail</Text>
-        <Text style={styles.textAmountTransfer}>pewdiepie1@gmail.com</Text>
+        <Text style={styles.textAmountTransfer}>{profile.email}</Text>
       </View>
 
       <View style={styles.dataHistoryContainer}>
-        <View>
+        <View style={styles.phoneFlex}>
           <Text style={styles.textMutedTransfer}>Phone Number</Text>
-          <Text style={styles.textAmountTransfer}>{profile.phone_number}</Text>
+          <Text style={styles.textAmountTransfer}>
+            {profile.phone_number === null ? '-' : profile.phone_number}
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('AddPhoneNum')}>
+            <Text style={styles.newPhone}>Manage</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -90,6 +97,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     color: '#514F5B',
+  },
+  newPhone: {
+    marginTop: 15,
   },
 });
 

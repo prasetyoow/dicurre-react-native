@@ -29,7 +29,6 @@ const FindReceiver = () => {
   const [sort, setSort] = React.useState('ASC');
   const [search, setSearch] = React.useState('');
   const [sortType, setSortType] = React.useState('fullname');
-  // const profiles = useSelector(state => state.transactions?.results);
   const nextPage = useSelector(state => state.transactions?.nextPage);
   const pageInfo = useSelector(state => state.transactions?.pageInfo);
 
@@ -95,6 +94,7 @@ const FindReceiver = () => {
         search: search,
       }),
     );
+    dispatch(resetDataContact());
   }, [dispatch, sort, sortType, search]);
   return (
     <>
@@ -151,19 +151,6 @@ const FindReceiver = () => {
                 </View>
               </TouchableOpacity>
             </View>
-            {/* <View style={styles.paginFlex}>
-              <TouchableOpacity>
-                <View style={styles.buttonPaginContainer}>
-                  <Text>Prev</Text>
-                </View>
-              </TouchableOpacity>
-              <Text style={styles.numPagin}>1</Text>
-              <TouchableOpacity>
-                <View style={styles.buttonPaginContainer}>
-                  <Text>Next</Text>
-                </View>
-              </TouchableOpacity>
-            </View> */}
           </>
         }
         data={nextPage}
@@ -332,7 +319,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textDate: {
-    color: '#6379F4',
+    color: PRIMARY_COLOR,
   },
 });
 

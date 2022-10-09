@@ -23,6 +23,7 @@ const TransferSuccess = ({navigation}) => {
   const date = new Date().toISOString();
   const dateOnly = date.slice(0, 10);
   const hour = date.slice(11, 16);
+
   const slicedMoney = profile.balance
     .slice('2')
     .replace('.', '')

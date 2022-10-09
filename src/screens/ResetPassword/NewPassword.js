@@ -19,7 +19,7 @@ const NewPassword = () => {
       <View style={styles.containerContent}>
         <Text style={styles.contentHead}>Reset Password</Text>
         <Text style={styles.contentMuted}>
-          Enter your Zwallet e-mail so we can send you a password reset link.
+          Enter your Dicurre e-mail so we can send you a password reset link.
         </Text>
         <View style={styles.inputCustom}>
           <CustomInput
