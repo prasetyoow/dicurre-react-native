@@ -12,9 +12,7 @@ const ListHistory = ({item}) => {
               item.picture === null || item.penerima_photo === null
                 ? require('../assets/images/defaultProfile.png')
                 : {
-                    uri:
-                      'http://192.168.1.10:8787/public/uploads/' +
-                      item.penerima_photo,
+                    uri: item.penerima_photo,
                   }
             }
           />

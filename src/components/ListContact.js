@@ -12,8 +12,7 @@ const ListContact = ({item}) => {
               item.picture === null
                 ? require('../assets/images/defaultProfile.png')
                 : {
-                    uri:
-                      'http://192.168.1.10:8787/public/uploads/' + item.picture,
+                    uri: item.picture,
                   }
             }
           />
