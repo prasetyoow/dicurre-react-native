@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTabStack from './HomeTabStack';
 import Details from '../screens/Dashboard/History/Details';
 import PersonalInfo from '../screens/Dashboard/Profile/PersonalInfo';
+import EditPicture from '../screens/Dashboard/Profile/EditPicture';
 import ChangePassword from '../screens/Dashboard/Profile/ChangePassword';
 import ChangePIN from '../screens/Dashboard/Profile/ChangePIN';
 import InputAmount from '../screens/Dashboard/Transaction/InputAmount';
@@ -11,6 +12,8 @@ import Confirmation from '../screens/Dashboard/Transaction/Confirmation';
 import EnterPIN from '../screens/Dashboard/Transaction/EnterPIN';
 import TransferSuccess from '../screens/Dashboard/Transaction/TransferSuccess';
 import TransferFailed from '../screens/Dashboard/Transaction/TransferFailed';
+import ManagePhoneNum from '../screens/Dashboard/Profile/ManagePhoneNum';
+import AddPhoneNum from './Dashboard/Profile/AddPhoneNum';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +33,21 @@ const HomeStack = () => {
       <Stack.Screen
         name="PersonalInfo"
         component={PersonalInfo}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPicture"
+        component={EditPicture}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewPhone"
+        component={ManagePhoneNum}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddPhoneNum"
+        component={AddPhoneNum}
         options={{headerShown: false}}
       />
       <Stack.Screen
