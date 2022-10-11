@@ -38,12 +38,31 @@ export const getHistoryTransaction = createAsyncThunk(
   },
 );
 
+export const getDetailTransaction = createAsyncThunk(
+  'auth/detailHistory',
+  async ({token, param}) => {
+    const results = {};
+    try {
+      const {data} = await http(token).get(
+        `auth/historyTransactions/${param.id}`,
+      );
+      console.log(data + ' ini data');
+      results.data = data.results;
+      results.message = data.message;
+      return results;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  },
+);
+
 export const topUp = createAsyncThunk(
   'auth/topup',
   async ({token, request}) => {
     const results = {};
     console.log(token + 'ini token');
-    console.log(request.toString() + 'ini request');
+    console.log(qs.stringify(request) + 'ini request');
     try {
       const send = qs.stringify(request);
       console.log(send + 'ini send');
@@ -65,15 +84,11 @@ export const transfer = createAsyncThunk(
     const results = {};
     try {
       const send = qs.stringify(request);
-      console.log(data + ' ini data');
-      console.log(send + ' ini log send');
       const {data} = await http(token).post('auth/transfer', send);
-      console.log(data + ' ini data');
       results.data = data.results;
       results.message = data.message;
       return results;
     } catch (e) {
-      console.log(e + ' apakah ini errornya gaes?');
       results.error = e.response.data.message;
       return results;
     }

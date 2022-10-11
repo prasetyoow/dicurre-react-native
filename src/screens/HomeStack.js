@@ -11,6 +11,7 @@ import InputAmount from '../screens/Dashboard/Transaction/InputAmount';
 import Confirmation from '../screens/Dashboard/Transaction/Confirmation';
 import EnterPIN from '../screens/Dashboard/Transaction/EnterPIN';
 import TransferSuccess from '../screens/Dashboard/Transaction/TransferSuccess';
+import TransferSuccessHistory from '../screens/Dashboard/Transaction/TransferSuccessHistory';
 import TransferFailed from '../screens/Dashboard/Transaction/TransferFailed';
 import ManagePhoneNum from '../screens/Dashboard/Profile/ManagePhoneNum';
 import AddPhoneNum from './Dashboard/Profile/AddPhoneNum';
@@ -78,6 +79,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="TransferSuccess"
         component={TransferSuccess}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TransferSuccessHistory"
+        component={TransferSuccessHistory}
         options={{headerShown: false}}
       />
       <Stack.Screen

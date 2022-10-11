@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ReactNativePinView from 'react-native-pin-view';
@@ -7,7 +7,7 @@ import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {transfer} from '../../../redux/asyncActions/transactions';
-import {resetmsg} from '../../../redux/reducers/transactions';
+import {getimage, resetmsg} from '../../../redux/reducers/transactions';
 
 const EnterPIN = ({navigation}) => {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ const EnterPIN = ({navigation}) => {
   const successMsg = useSelector(state => state.transactions.successMsg);
   const errorMsg = useSelector(state => state.transactions.errorMsg);
   const amount = useSelector(state => state.transactions.amount);
+  const image = useSelector(state => state.transactions.image);
   const notes = useSelector(state => state.transactions.notes);
   const receiver_id = useSelector(state => state.transactions.receiver);
   const time = useSelector(state => state.transactions.time);
@@ -41,6 +42,7 @@ const EnterPIN = ({navigation}) => {
     if (successMsg) {
       navigation.navigate('TransferSuccess');
     } else if (errorMsg) {
+      Alert.alert('Transfer Failed', errorMsg);
       navigation.navigate('TransferFailed');
     }
   }, [successMsg, errorMsg, navigation, dispatch]);
@@ -92,6 +94,7 @@ const EnterPIN = ({navigation}) => {
               pin: enteredPin,
             };
             dispatch(transfer({token, request}));
+            dispatch(getimage(image));
           }
         }}
         customLeftButton={

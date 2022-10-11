@@ -8,9 +8,37 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import qs from 'qs';
+
+// redux
+import {resetMsg} from '../../../redux/reducers/profile';
+import {editPhoneNumber} from '../../../redux/asyncActions/profile';
 
 const AddPhoneNum = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [phone, setPhone] = React.useState('');
+  const token = useSelector(state => state.auth.token);
+  const successMsg = useSelector(state => state.profile.successMsg);
+
+  const onChangePhone = () => {
+    dispatch(resetMsg);
+    const request = {token: token, phone_number: phone};
+    console.log(qs.stringify(request) + ' dari page');
+    dispatch(editPhoneNumber(request));
+    if (successMsg) {
+      navigation.navigate('Profile');
+    }
+  };
+
+  React.useEffect(() => {
+    dispatch(resetMsg);
+    if (successMsg) {
+      navigation.navigate('Profile');
+    }
+  }, [dispatch, successMsg, navigation]);
+
   return (
     <>
       {/* Top Navigation */}
@@ -34,10 +62,15 @@ const AddPhoneNum = () => {
           color="#A9A9A999"
         />
         <Text style={styles.textForm}>+62</Text>
-        <TextInput placeholder="Enter your phone number" />
+        <TextInput
+          placeholder="Enter your phone number"
+          keyboardType="decimal-pad"
+          value={phone}
+          onChangeText={setPhone}
+        />
       </View>
 
-      <TouchableOpacity style={styles.containerButton}>
+      <TouchableOpacity style={styles.containerButton} onPress={onChangePhone}>
         <Text style={styles.textButton}>Submit</Text>
       </TouchableOpacity>
     </>

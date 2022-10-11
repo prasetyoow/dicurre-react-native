@@ -4,6 +4,7 @@ import {
   topUp,
   transfer,
   getHistoryTransaction,
+  getDetailTransaction,
 } from '../asyncActions/transactions';
 
 const initialState = {
@@ -95,6 +96,13 @@ const transactions = createSlice({
       state.results = action.payload?.data;
       state.pageInfoHistory = action.payload?.pageInfoHistory;
       state.nextPageHistory.push(...action.payload.data);
+    });
+    build.addCase(getDetailTransaction.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(getDetailTransaction.fulfilled, (state, action) => {
+      state.resultsDetail = action.payload?.data;
     });
   },
 });

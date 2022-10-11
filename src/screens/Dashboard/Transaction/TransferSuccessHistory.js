@@ -2,26 +2,21 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Image,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {PRIMARY_COLOR} from '../../../assets/styles/coloring';
 
 // redux
 import {useSelector} from 'react-redux';
 
-const TransferFailed = ({navigation}) => {
-  const name = useSelector(state => state.transactions.name);
-  const phone = useSelector(state => state.transactions.phone);
-  const image = useSelector(state => state.transactions.image);
-  console.log(image + ' ini image failed');
-  const profile = useSelector(state => state.profile.data);
-  const amount = useSelector(state => state.transactions.amount);
-  const notes = useSelector(state => state.transactions.notes);
+const TransferSuccessHistory = ({route, navigation}) => {
+  const data = route.params.item;
+  console.log(data);
   const date = new Date().toISOString();
   const dateOnly = date.slice(0, 10);
   const hour = date.slice(11, 16);
@@ -31,28 +26,22 @@ const TransferFailed = ({navigation}) => {
         <ScrollView>
           <View style={styles.iconCenter}>
             <View style={styles.iconContainer}>
-              <Icon name="x" size={40} color="white" />
+              <Icon name="check" size={40} color="white" />
             </View>
           </View>
-          <Text style={styles.contentHead}>Transfer Failed</Text>
-          <Text style={styles.textMuted}>
-            We can't transfer your money at the moment, we recommend you to
-            check your internet connection and try again.
-          </Text>
+          <Text style={styles.contentHead}>Transfer Success</Text>
 
           <Text style={styles.textMid}>Details</Text>
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Amount</Text>
-            <Text style={styles.textAmountTransfer}>Rp. {amount}</Text>
+            <Text style={styles.textAmountTransfer}>Rp. {data.amount}</Text>
           </View>
 
-          <View style={styles.dataHistoryContainer}>
+          {/* <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Balance Left</Text>
-            <Text style={styles.textAmountTransfer}>
-              Rp. {profile.balance - amount}
-            </Text>
-          </View>
+            <Text style={styles.textAmountTransfer}>Rp. {profile.balance}</Text>
+          </View> */}
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Date & Time</Text>
@@ -63,7 +52,7 @@ const TransferFailed = ({navigation}) => {
 
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Notes</Text>
-            <Text style={styles.textAmountTransfer}>{notes}</Text>
+            <Text style={styles.textAmountTransfer}>{data.notes}</Text>
           </View>
 
           <Text style={styles.textMid}>Transfer to</Text>
@@ -74,16 +63,20 @@ const TransferFailed = ({navigation}) => {
                 <Image
                   style={styles.dataHistoryImage}
                   source={
-                    image === null
+                    data.penerima_photo === null
                       ? require('../../../assets/images/defaultProfile.png')
                       : {
-                          uri: image,
+                          uri: data.penerima_photo,
                         }
                   }
                 />
                 <View>
-                  <Text style={styles.dataNameHistory}>{name}</Text>
-                  <Text style={styles.textMutedHistory}>{phone}</Text>
+                  <Text style={styles.dataNameHistory}>
+                    {data.penerima_fullname}
+                  </Text>
+                  <Text style={styles.textMutedHistory}>
+                    {data.penerima_phone}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -105,7 +98,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    backgroundColor: '#FF5B37',
+    backgroundColor: '#1EC15F',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -124,13 +117,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#514F5B',
     fontWeight: '700',
-  },
-  textMuted: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 27,
-    color: '#7A7886',
-    padding: 15,
   },
   dataHistoryContainer: {
     margin: 10,
@@ -191,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TransferFailed;
+export default TransferSuccessHistory;

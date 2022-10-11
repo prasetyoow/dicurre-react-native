@@ -5,11 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getdate,
-  getimage,
-  resetmsg,
-} from '../../../redux/reducers/transactions';
+import {getdate, resetmsg} from '../../../redux/reducers/transactions';
 
 const Confirmation = ({navigation}) => {
   const dispatch = useDispatch();
@@ -22,14 +18,9 @@ const Confirmation = ({navigation}) => {
   const date = new Date().toISOString();
   const dateOnly = date.slice(0, 10);
   const hour = date.slice(11, 16);
-  const slicedMoney = profile.balance
-    .slice('2')
-    .replace('.', '')
-    .replace('.', '');
-  console.log(slicedMoney + ' ini slicedMoney');
+
   const onSubmit = val => {
     dispatch(getdate(date));
-    dispatch(getimage(val.picture));
     navigation.navigate('EnterPIN');
   };
   React.useEffect(() => {
@@ -56,7 +47,7 @@ const Confirmation = ({navigation}) => {
                 image === null
                   ? require('../../../assets/images/defaultProfile.png')
                   : {
-                      uri: 'http://192.168.1.10:8787/public/uploads/' + image,
+                      uri: image,
                     }
               }
             />
@@ -78,7 +69,7 @@ const Confirmation = ({navigation}) => {
       <View style={styles.dataHistoryContainer}>
         <Text style={styles.textMutedTransfer}>Balance Left</Text>
         <Text style={styles.textAmountTransfer}>
-          Rp. {slicedMoney - amount}
+          Rp. {profile.balance - amount}
         </Text>
       </View>
 

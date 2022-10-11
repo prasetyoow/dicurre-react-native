@@ -84,12 +84,8 @@ const InputAmount = ({navigation}) => {
   const phone = useSelector(state => state.transactions.phone);
   const profile = useSelector(state => state.profile.data);
   const image = useSelector(state => state.transactions.image);
-  const slicedMoney = profile.balance
-    .slice('2')
-    .replace('.', '')
-    .replace('.', '');
   const onConfirm = val => {
-    if (parseInt(val.amount, 10) < parseInt(slicedMoney, 10)) {
+    if (parseInt(val.amount, 10)) {
       dispatch(getamount(val.amount));
       dispatch(getnotes(val.notes));
       navigation.navigate('Confirmation');
@@ -121,7 +117,7 @@ const InputAmount = ({navigation}) => {
                   image === null
                     ? require('../../../assets/images/defaultProfile.png')
                     : {
-                        uri: 'http://192.168.1.10:8787/public/uploads/' + image,
+                        uri: image,
                       }
                 }
               />

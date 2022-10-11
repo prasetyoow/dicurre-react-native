@@ -40,6 +40,27 @@ export const editProfile = createAsyncThunk(
   },
 );
 
+export const editPhoneNumber = createAsyncThunk(
+  'auth/editPhoneNumber',
+  async request => {
+    const results = {};
+    const token = request.token;
+    console.log(qs.stringify(results) + ' ini results');
+    console.log(qs.stringify(request) + ' ini request');
+    try {
+      const send = qs.stringify(request);
+      const {data} = await http(token).patch('auth/profile', send);
+      console.log(data + ' ini data async');
+      results.data = data.results;
+      results.message = data.message;
+      return results;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  },
+);
+
 export const editPicture = createAsyncThunk(
   'auth/editPicture',
   async request => {

@@ -18,16 +18,13 @@ const TransferSuccess = ({navigation}) => {
   const name = useSelector(state => state.transactions.name);
   const phone = useSelector(state => state.transactions.phone);
   const profile = useSelector(state => state.profile.data);
+  const image = useSelector(state => state.transactions.image);
+  console.log(image + ' image dari screen success');
   const amount = useSelector(state => state.transactions.amount);
   const notes = useSelector(state => state.transactions.notes);
   const date = new Date().toISOString();
   const dateOnly = date.slice(0, 10);
   const hour = date.slice(11, 16);
-
-  const slicedMoney = profile.balance
-    .slice('2')
-    .replace('.', '')
-    .replace('.', '');
   return (
     <>
       <SafeAreaView>
@@ -49,7 +46,7 @@ const TransferSuccess = ({navigation}) => {
           <View style={styles.dataHistoryContainer}>
             <Text style={styles.textMutedTransfer}>Balance Left</Text>
             <Text style={styles.textAmountTransfer}>
-              Rp. {slicedMoney - amount}
+              Rp. {profile.balance - amount}
             </Text>
           </View>
 
@@ -72,7 +69,13 @@ const TransferSuccess = ({navigation}) => {
               <View style={styles.profHistoryFlex}>
                 <Image
                   style={styles.dataHistoryImage}
-                  source={require('../../../assets/images/defaultProfile.png')}
+                  source={
+                    image === null
+                      ? require('../../../assets/images/defaultProfile.png')
+                      : {
+                          uri: image,
+                        }
+                  }
                 />
                 <View>
                   <Text style={styles.dataNameHistory}>{name}</Text>

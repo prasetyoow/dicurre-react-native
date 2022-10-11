@@ -10,6 +10,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import ListHistory from '../../components/ListHistory';
+import qs from 'qs';
 
 // redux
 import {getUserLogin} from '../../redux/asyncActions/profile';
@@ -21,8 +22,10 @@ const Home = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.data);
+  console.log(profile.balance);
   const token = useSelector(state => state.auth.token);
   const data = useSelector(state => state.transactions.resultsHistory);
+  console.log(qs.stringify(data) + ' ini data history');
 
   const [sort, setSort] = React.useState('DESC');
 
@@ -69,7 +72,11 @@ const Home = () => {
         <View style={styles.containerContentBalance}>
           <Text style={styles.textBalanceTop}>Balance</Text>
           <Text style={styles.textBalanceMid}>
-            {profile?.balance === null ? '-' : profile?.balance}
+            {profile?.balance === null ? (
+              '-'
+            ) : (
+              <Text>Rp. {profile?.balance}</Text>
+            )}
           </Text>
           <Text style={styles.textBalanceBot}>
             {profile?.phone_number === null ? '-' : profile?.phone_number}
@@ -117,7 +124,9 @@ const Home = () => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate('TransferSuccess')}>
+              onPress={() =>
+                navigation.navigate('TransferSuccessHistory', {item})
+              }>
               <ListHistory item={item} />
             </TouchableOpacity>
           );

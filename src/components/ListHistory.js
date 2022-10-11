@@ -23,9 +23,9 @@ const ListHistory = ({item}) => {
         </View>
         <View>
           {item.tipe_transaksi === 'Transfer' ? (
-            <Text style={styles.dataDanger}>- {item.amount}</Text>
+            <Text style={styles.dataDanger}>- Rp. {item.amount}</Text>
           ) : (
-            <Text style={styles.dataSuccess}>+ {item.amount}</Text>
+            <Text style={styles.dataSuccess}>+ Rp. {item.amount}</Text>
           )}
         </View>
       </View>
